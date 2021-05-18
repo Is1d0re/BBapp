@@ -1,13 +1,47 @@
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { StatusBar } from 'expo-status-bar';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
+import { createStackNavigator } from '@react-navigation/stack';
+import { NavigationContainer } from '@react-navigation/native';
+
+import Intro from './app/screens/Intro';
+import BucketScreen from './app/screens/BucketScreen';
+import BucketDetail from './app/components/BucketDetail';
+import BucketProvider from './app/contexts/BucketProvider';
+
+const Stack = createStackNavigator();
 
 export default function App() {
+  const [user, setUser] = useState({});
+  const [isAppFirstTimeOpen, setIsAppFirstTimeOpen] = useState(false);
+  const findUser = async () => {
+    const result = await AsyncStorage.getItem('user');
+
+    if (result === null) return setIsAppFirstTimeOpen(true);
+
+    setUser(JSON.parse(result));
+    setIsAppFirstTimeOpen(false);
+  };
+
+  useEffect(() => {
+    findUser();
+  }, []);
+
+  const renderBucketScreen = props => <BucketScreen {...props} user={user} />;
+
+  if (isAppFirstTimeOpen) return <Intro onFinish={findUser} />;
   return (
-    <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
+    <NavigationContainer>
+      <BucketProvider>
+        <Stack.Navigator
+          screenOptions={{ headerTitle: '', headerTransparent: true }}
+        >
+          <Stack.Screen component={renderBucketScreen} name='BucketScreen' />
+          <Stack.Screen component={BucketDetail} name='BucketDetail' />
+        </Stack.Navigator>
+      </BucketProvider>
+    </NavigationContainer>
   );
 }
 

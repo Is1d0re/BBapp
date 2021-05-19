@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "BB App",
-    "slug": "BB App",
+    "name": "BBapp",
+    "slug": "BBapp",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/BBicon.png",

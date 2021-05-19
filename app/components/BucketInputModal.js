@@ -14,6 +14,7 @@ import {
 import colors from '../misc/colors';
 import RoundIconBtn from './RoundIconBtn';
 import {AntDesign} from '@expo/vector-icons'
+import CloseIconBtn from './CloseIconBtn';
 
 const BucketInputModal = ({ visible, onClose, onSubmit, bucket, isEdit }) => {
   const [title, setTitle] = useState('');
@@ -63,14 +64,12 @@ const BucketInputModal = ({ visible, onClose, onSubmit, bucket, isEdit }) => {
         <View style={styles.wrapper}></View>
         
         <View style={styles.container}>
-        <TouchableOpacity style={styles.closeBtn} onPress={() => closeModal()}>
-          <AntDesign
-            name={'close'}
-            size={30}
-            color={colors.DARK}
-            
-          />
-        </TouchableOpacity>
+        <CloseIconBtn
+                style={styles.closeBtn}
+                antIconName='close'
+                onPress={closeModal}
+                
+              />
         <Text style={styles.modalTitle}>Add New Savings Bucket</Text>
           <TextInput
             value={title}
@@ -124,16 +123,17 @@ const styles = StyleSheet.create({
     height: '90%',
   },
   closeBtn:{
-    right:20,
-    top: 10,
+    //backgroundColor: 'black',
     position: 'absolute',
-    width: 30,
-    height: 30,
+    right: 10,
+    top: 10,
+
   },
   modalTitle:{
     fontSize:22,
     fontWeight: 'bold',
     color: '#8daca6',
+    marginTop: 10,
     marginBottom: 20,
     paddingTop: 10,
     

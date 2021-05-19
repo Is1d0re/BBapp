@@ -9,9 +9,11 @@ import {
   TouchableWithoutFeedback,
   Keyboard,
   SafeAreaView,
+  TouchableOpacity,
 } from 'react-native';
 import colors from '../misc/colors';
 import RoundIconBtn from './RoundIconBtn';
+import {AntDesign} from '@expo/vector-icons'
 
 const BucketInputModal = ({ visible, onClose, onSubmit, bucket, isEdit }) => {
   const [title, setTitle] = useState('');
@@ -53,11 +55,23 @@ const BucketInputModal = ({ visible, onClose, onSubmit, bucket, isEdit }) => {
     onClose();
   };
 
+  
   return (
     <>
-      <Modal visible={visible} animationType='fade'>
+      <Modal visible={visible} animationType='slide' transparent>
         <SafeAreaView />
+        <View style={styles.wrapper}></View>
+        
         <View style={styles.container}>
+        <TouchableOpacity style={styles.closeBtn} onPress={() => closeModal()}>
+          <AntDesign
+            name={'close'}
+            size={30}
+            color={colors.DARK}
+            
+          />
+        </TouchableOpacity>
+        <Text style={styles.modalTitle}>Add New Savings Bucket</Text>
           <TextInput
             value={title}
             onChangeText={text => handleOnChangeText(text, 'title')}
@@ -73,19 +87,20 @@ const BucketInputModal = ({ visible, onClose, onSubmit, bucket, isEdit }) => {
           />
           <View style={styles.btnContainer}>
             <RoundIconBtn
-              size={15}
+              size={30}
               antIconName='check'
               onPress={handleSubmit}
             />
             {title.trim() || desc.trim() ? (
               <RoundIconBtn
-                size={15}
+                size={30}
                 style={{ marginLeft: 15 }}
                 antIconName='close'
                 onPress={closeModal}
               />
             ) : null}
           </View>
+          
         </View>
         <TouchableWithoutFeedback onPress={handleModalClose}>
           <View style={[styles.modalBG, StyleSheet.absoluteFillObject]} />
@@ -96,9 +111,32 @@ const BucketInputModal = ({ visible, onClose, onSubmit, bucket, isEdit }) => {
 };
 
 const styles = StyleSheet.create({
+  wrapper:{
+    flex: 1,
+  },
   container: {
     paddingHorizontal: 20,
-    paddingTop: 15,
+    paddingTop: 20,
+    marginTop: 60,
+    borderRadius: 30,
+    backgroundColor: '#ffe7df',
+    marginHorizontal: 10,
+    height: '90%',
+  },
+  closeBtn:{
+    right:20,
+    top: 10,
+    position: 'absolute',
+    width: 30,
+    height: 30,
+  },
+  modalTitle:{
+    fontSize:22,
+    fontWeight: 'bold',
+    color: '#8daca6',
+    marginBottom: 20,
+    paddingTop: 10,
+    
   },
   input: {
     borderBottomWidth: 2,

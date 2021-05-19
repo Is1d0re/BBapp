@@ -144,6 +144,7 @@ const BucketScreen = ({ user, navigation }) => {
         onSubmit={handleOnSubmit}
       />
       
+      <Button title='reset databases' color='red' onPress={() => AsyncStorage.clear()} />
 
     </>
   );

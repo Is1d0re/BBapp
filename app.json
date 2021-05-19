@@ -1,12 +1,12 @@
 {
   "expo": {
-    "name": "ndp-note",
-    "slug": "ndp-note",
+    "name": "BB App",
+    "slug": "BB App",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/icon.png",
+    "icon": "./assets/BBicon.png",
     "splash": {
-      "image": "./assets/ndp_splash.png",
+      "image": "./assets/BBsplash.png",
       "resizeMode": "cover",
       "backgroundColor": "#ffffff"
     },

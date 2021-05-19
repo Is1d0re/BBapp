@@ -52,7 +52,7 @@ const BucketScreen = ({ user, navigation }) => {
   const reverseBuckets = reverseData(buckets);
 
   const handleOnSubmit = async (title, desc) => {
-    const bucket = { id: Date.now(), title, desc, time: Date.now() };
+    const bucket = { id: Date.now(), title , desc, time: Date.now() };
     const updatedBuckets = [...buckets, bucket];
     setBuckets(updatedBuckets);
     await AsyncStorage.setItem('buckets', JSON.stringify(updatedBuckets));

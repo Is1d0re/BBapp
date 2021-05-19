@@ -8,6 +8,7 @@ import {
   TextInput,
   TouchableWithoutFeedback,
   Keyboard,
+  SafeAreaView,
 } from 'react-native';
 import colors from '../misc/colors';
 import RoundIconBtn from './RoundIconBtn';
@@ -54,8 +55,8 @@ const BucketInputModal = ({ visible, onClose, onSubmit, bucket, isEdit }) => {
 
   return (
     <>
-      <StatusBar hidden />
       <Modal visible={visible} animationType='fade'>
+        <SafeAreaView />
         <View style={styles.container}>
           <TextInput
             value={title}
@@ -90,7 +91,7 @@ const BucketInputModal = ({ visible, onClose, onSubmit, bucket, isEdit }) => {
           <View style={[styles.modalBG, StyleSheet.absoluteFillObject]} />
         </TouchableWithoutFeedback>
       </Modal>
-    </>
+      </>
   );
 };
 

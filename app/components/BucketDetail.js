@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { ScrollView, StyleSheet, Text, View, Alert } from 'react-native';
+import { ScrollView, StyleSheet, Text, View, Alert, Image } from 'react-native';
 import { useHeaderHeight } from '@react-navigation/stack';
 import colors from '../misc/colors';
 import RoundIconBtn from './RoundIconBtn';
@@ -97,7 +97,7 @@ const BucketDetail = props => {
             ? `Updated At ${formatDate(bucket.time)}`
             : `Created At ${formatDate(bucket.time)}`}
         </Text>
-        <Image style={styles.icon} source ={icon} />
+        <Image style={styles.icon} source = {JSON.parse(bucket.icon)} /> 
         <Text style={styles.title}>{bucket.title}</Text>
         <Text style={styles.goal}>{bucket.goal}</Text>
         <Text style={styles.goal}>{bucket.balance}</Text>

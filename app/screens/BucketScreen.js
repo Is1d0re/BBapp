@@ -108,11 +108,6 @@ const BucketScreen = ({ user, navigation }) => {
           ) : (
             <FlatList
               data={reverseBuckets}
-              numColumns={2}
-              columnWrapperStyle={{
-                justifyContent: 'space-between',
-                marginBottom: 15,
-              }}
               keyExtractor={item => item.id.toString()}
               renderItem={({ item }) => (
                 <Bucket onPress={() => openBucket(item)} item={item} />

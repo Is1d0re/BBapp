@@ -5,6 +5,7 @@ import {
   Text,
   Dimensions,
   TouchableOpacity,
+  Image,
 } from 'react-native';
 import colors from '../misc/colors';
 
@@ -12,12 +13,18 @@ const Bucket = ({ item, onPress }) => {
   const { title, goal, balance, targetDate } = item;
   return (
     <TouchableOpacity onPress={onPress} style={styles.container}>
+      <View style={styles.bucketLeft}>
+                <Image style={styles.icon} source ={require('../../assets/icons/christmas-tree.png')} />
+
+            </View>
+      <View>
       <Text style={styles.title} numberOfLines={2}>
         {title}
       </Text>
       <Text>{goal}</Text>
       <Text>{balance}</Text>
       <Text>{targetDate}</Text>
+      </View>
     </TouchableOpacity>
   );
 };
@@ -27,15 +34,30 @@ const width = Dimensions.get('window').width - 40;
 const styles = StyleSheet.create({
   container: {
     backgroundColor: colors.PRIMARY,
-    width: width / 2 - 10,
+    //width: '90%',
+    height: 100,
     padding: 8,
     borderRadius: 10,
+    marginBottom: 10,
+    flexDirection: 'row',
+    alignItems: 'center',
   },
   title: {
     fontWeight: 'bold',
     fontSize: 16,
     color: colors.LIGHT,
   },
+
+bucketLeft: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    flexWrap: 'wrap',
+},
+icon: {
+    height:50,
+    width: 50,
+    marginRight: 25,
+},
 });
 
 export default Bucket;

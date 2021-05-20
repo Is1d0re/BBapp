@@ -111,14 +111,12 @@ const BucketInputModal = ({ visible, onClose, onSubmit, bucket, isEdit }) => {
               antIconName='check'
               onPress={handleSubmit}
             />
-            {title.trim() || goal.trim() || balance.trim() || targetDate.trim() ? (
               <RoundIconBtn
                 size={30}
                 style={{ marginLeft: 15 }}
                 antIconName='close'
                 onPress={closeModal}
               />
-            ) : null}
           </View>
           
         </View>

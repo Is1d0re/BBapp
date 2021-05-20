@@ -18,7 +18,9 @@ import CloseIconBtn from './CloseIconBtn';
 
 const BucketInputModal = ({ visible, onClose, onSubmit, bucket, isEdit }) => {
   const [title, setTitle] = useState('');
-  const [desc, setDesc] = useState('');
+  const [goal, setGoal] = useState('');
+  const [balance, setBalance] = useState('');
+  const [targetDate, setTargetDate] = useState('');
   const handleModalClose = () => {
     Keyboard.dismiss();
   };
@@ -26,24 +28,30 @@ const BucketInputModal = ({ visible, onClose, onSubmit, bucket, isEdit }) => {
   useEffect(() => {
     if (isEdit) {
       setTitle(bucket.title);
-      setDesc(bucket.desc);
+      setGoal(bucket.goal);
+      setBalance(bucket.balance);
+      setTargetDate(bucket.targetDate);
     }
   }, [isEdit]);
 
   const handleOnChangeText = (text, valueFor) => {
     if (valueFor === 'title') setTitle(text);
-    if (valueFor === 'desc') setDesc(text);
+    if (valueFor === 'goal') setGoal(text);
+    if (valueFor === 'balance') setBalance(text);
+    if (valueFor === 'targetDate') setTargetDate(text);
   };
 
   const handleSubmit = () => {
-    if (!title.trim() && !desc.trim()) return onClose();
+    if (!title.trim() && !goal.trim() && !balance.trim() && !targetDate.trim()) return onClose();
 
     if (isEdit) {
-      onSubmit(title, desc, Date.now());
+      onSubmit(title, goal, balance, targetDate, Date.now());
     } else {
-      onSubmit(title, desc);
+      onSubmit(title, goal, balance, targetDate);
       setTitle('');
-      setDesc('');
+      setGoal('');
+      setBalance('');
+      setTargetDate('');
     }
     onClose();
   };
@@ -51,7 +59,9 @@ const BucketInputModal = ({ visible, onClose, onSubmit, bucket, isEdit }) => {
   const closeModal = () => {
     if (!isEdit) {
       setTitle('');
-      setDesc('');
+      setGoal('');
+      setBalance('');
+      setTargetDate('');
     }
     onClose();
   };
@@ -78,19 +88,30 @@ const BucketInputModal = ({ visible, onClose, onSubmit, bucket, isEdit }) => {
             style={[styles.input, styles.title]}
           />
           <TextInput
-            value={desc}
-            multiline
-            placeholder='Bucket'
-            style={[styles.input, styles.desc]}
-            onChangeText={text => handleOnChangeText(text, 'desc')}
+            value={goal}
+            placeholder='Goal Amount'
+            style={[styles.input, styles.goal]}
+            onChangeText={text => handleOnChangeText(text, 'goal')}
+          />
+          <TextInput
+            value={balance}
+            placeholder='Current Balance'
+            style={[styles.input, styles.goal]}
+            onChangeText={text => handleOnChangeText(text, 'balance')}
+          />
+          <TextInput
+            value={targetDate}
+            placeholder='Tageted Date'
+            style={[styles.input, styles.goal]}
+            onChangeText={text => handleOnChangeText(text, 'targetDate')}
           />
           <View style={styles.btnContainer}>
             <RoundIconBtn
-              size={30}
+              size={30} 
               antIconName='check'
               onPress={handleSubmit}
             />
-            {title.trim() || desc.trim() ? (
+            {title.trim() || goal.trim() || balance.trim() || targetDate.trim() ? (
               <RoundIconBtn
                 size={30}
                 style={{ marginLeft: 15 }}
@@ -149,8 +170,8 @@ const styles = StyleSheet.create({
     marginBottom: 15,
     fontWeight: 'bold',
   },
-  desc: {
-    height: 100,
+  goal: {
+   // height: 100,
   },
   modalBG: {
     flex: 1,

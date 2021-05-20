@@ -57,7 +57,7 @@ const BucketDetail = props => {
     );
   };
 
-  const handleUpdate = async (title, desc, time) => {
+  const handleUpdate = async (title, goal, balance, targetDate, time) => {
     const result = await AsyncStorage.getItem('buckets');
     let buckets = [];
     if (result !== null) buckets = JSON.parse(result);
@@ -65,7 +65,9 @@ const BucketDetail = props => {
     const newBuckets = buckets.filter(n => {
       if (n.id === bucket.id) {
         n.title = title;
-        n.desc = desc;
+        n.goal = goal;
+        n.balance = balance;
+        n.targetDate = targetDate;
         n.isUpdated = true;
         n.time = time;
 
@@ -95,7 +97,10 @@ const BucketDetail = props => {
             : `Created At ${formatDate(bucket.time)}`}
         </Text>
         <Text style={styles.title}>{bucket.title}</Text>
-        <Text style={styles.desc}>{bucket.desc}</Text>
+        <Text style={styles.goal}>{bucket.goal}</Text>
+        <Text style={styles.goal}>{bucket.balance}</Text>
+        <Text style={styles.goal}>{bucket.targetDate}</Text>
+
       </ScrollView>
       <View style={styles.btnContainer}>
         <RoundIconBtn
@@ -126,7 +131,7 @@ const styles = StyleSheet.create({
     color: colors.PRIMARY,
     fontWeight: 'bold',
   },
-  desc: {
+  goal: {
     fontSize: 20,
     opacity: 0.6,
   },

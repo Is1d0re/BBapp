@@ -9,13 +9,15 @@ import {
 import colors from '../misc/colors';
 
 const Bucket = ({ item, onPress }) => {
-  const { title, desc } = item;
+  const { title, goal, balance, targetDate } = item;
   return (
     <TouchableOpacity onPress={onPress} style={styles.container}>
       <Text style={styles.title} numberOfLines={2}>
         {title}
       </Text>
-      <Text numberOfLines={3}>{desc}</Text>
+      <Text>{goal}</Text>
+      <Text>{balance}</Text>
+      <Text>{targetDate}</Text>
     </TouchableOpacity>
   );
 };

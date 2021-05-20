@@ -57,7 +57,7 @@ const BucketDetail = props => {
     );
   };
 
-  const handleUpdate = async (title, goal, balance, targetDate, time) => {
+  const handleUpdate = async (title, goal, balance, targetDate, icon, time) => {
     const result = await AsyncStorage.getItem('buckets');
     let buckets = [];
     if (result !== null) buckets = JSON.parse(result);
@@ -68,6 +68,7 @@ const BucketDetail = props => {
         n.goal = goal;
         n.balance = balance;
         n.targetDate = targetDate;
+        n.icon = icon;
         n.isUpdated = true;
         n.time = time;
 
@@ -96,6 +97,7 @@ const BucketDetail = props => {
             ? `Updated At ${formatDate(bucket.time)}`
             : `Created At ${formatDate(bucket.time)}`}
         </Text>
+        <Image style={styles.icon} source ={icon} />
         <Text style={styles.title}>{bucket.title}</Text>
         <Text style={styles.goal}>{bucket.goal}</Text>
         <Text style={styles.goal}>{bucket.balance}</Text>
@@ -126,6 +128,11 @@ const styles = StyleSheet.create({
     // flex: 1,
     paddingHorizontal: 15,
   },
+  icon: {
+    height:50,
+    width: 50,
+    //marginRight: 25,
+},
   title: {
     fontSize: 30,
     color: colors.PRIMARY,

@@ -13,14 +13,15 @@ import {
 } from 'react-native';
 import colors from '../misc/colors';
 import RoundIconBtn from './RoundIconBtn';
-import {AntDesign} from '@expo/vector-icons'
 import CloseIconBtn from './CloseIconBtn';
+import imageMap from '../misc/imageMap';
 
 const BucketInputModal = ({ visible, onClose, onSubmit, bucket, isEdit }) => {
   const [title, setTitle] = useState('');
   const [goal, setGoal] = useState('');
   const [balance, setBalance] = useState('');
   const [targetDate, setTargetDate] = useState('');
+  const [icon, setIcon] = useState('');
   const handleModalClose = () => {
     Keyboard.dismiss();
   };
@@ -31,6 +32,7 @@ const BucketInputModal = ({ visible, onClose, onSubmit, bucket, isEdit }) => {
       setGoal(bucket.goal);
       setBalance(bucket.balance);
       setTargetDate(bucket.targetDate);
+      setIcon(bucket.icon);
     }
   }, [isEdit]);
 
@@ -39,19 +41,21 @@ const BucketInputModal = ({ visible, onClose, onSubmit, bucket, isEdit }) => {
     if (valueFor === 'goal') setGoal(text);
     if (valueFor === 'balance') setBalance(text);
     if (valueFor === 'targetDate') setTargetDate(text);
+    if (valueFor === 'icon') setIcon(imageMap.icons.house);
   };
 
   const handleSubmit = () => {
-    if (!title.trim() && !goal.trim() && !balance.trim() && !targetDate.trim()) return onClose();
+    if (!title.trim() && !goal.trim() && !balance.trim() && !targetDate.trim() && !icon.trim()) return onClose();
 
     if (isEdit) {
-      onSubmit(title, goal, balance, targetDate, Date.now());
+      onSubmit(title, goal, balance, targetDate, icon, Date.now());
     } else {
-      onSubmit(title, goal, balance, targetDate);
+      onSubmit(title, goal, balance, targetDate, icon);
       setTitle('');
       setGoal('');
       setBalance('');
       setTargetDate('');
+      setIcon('');
     }
     onClose();
   };
@@ -62,6 +66,7 @@ const BucketInputModal = ({ visible, onClose, onSubmit, bucket, isEdit }) => {
       setGoal('');
       setBalance('');
       setTargetDate('');
+      setIcon('');
     }
     onClose();
   };
@@ -104,6 +109,12 @@ const BucketInputModal = ({ visible, onClose, onSubmit, bucket, isEdit }) => {
             placeholder='Tageted Date'
             style={[styles.input, styles.goal]}
             onChangeText={text => handleOnChangeText(text, 'targetDate')}
+          />
+          <TextInput
+            value={icon}
+            placeholder='icon name (icon-example.png)'
+            style={[styles.input, styles.goal]}
+            onChangeText={text => handleOnChangeText(text, 'icon')}
           />
           <View style={styles.btnContainer}>
             <RoundIconBtn

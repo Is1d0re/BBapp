@@ -8,13 +8,14 @@ import {
   Image,
 } from 'react-native';
 import colors from '../misc/colors';
+import imageMap from '../misc/imageMap';
 
 const Bucket = ({ item, onPress }) => {
-  const { title, goal, balance, targetDate } = item;
+  const { title, goal, balance, targetDate, icon } = item;
   return (
     <TouchableOpacity onPress={onPress} style={styles.container}>
       <View style={styles.bucketLeft}>
-                <Image style={styles.icon} source ={require('../../assets/icons/christmas-tree.png')} />
+              <Image style={styles.icon} source = {JSON.parse(icon)} /> 
 
             </View>
       <View>

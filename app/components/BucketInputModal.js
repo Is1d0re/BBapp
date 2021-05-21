@@ -15,6 +15,8 @@ import colors from '../misc/colors';
 import RoundIconBtn from './RoundIconBtn';
 import CloseIconBtn from './CloseIconBtn';
 import imageMap from '../misc/imageMap';
+import { AntDesign } from '@expo/vector-icons';
+import IconPickerModal from './IconPickerModal';
 
 const BucketInputModal = ({ visible, onClose, onSubmit, bucket, isEdit }) => {
   const [title, setTitle] = useState('');
@@ -71,12 +73,15 @@ const BucketInputModal = ({ visible, onClose, onSubmit, bucket, isEdit }) => {
     onClose();
   };
 
-  
+  const [IconmodalVisible, setIconModalVisible] = useState(false);
+  const handleOpenPicker = () => setIconModalVisible(true);
+  const handleClosePicker = () => setIconModalVisible(false);
+
   return (
     <>
-      <Modal visible={visible} animationType='slide' transparent>
+      <Modal visible={visible}>
         <SafeAreaView />
-        <View style={styles.wrapper}></View>
+        
         
         <View style={styles.container}>
         <CloseIconBtn
@@ -106,7 +111,7 @@ const BucketInputModal = ({ visible, onClose, onSubmit, bucket, isEdit }) => {
           />
           <TextInput
             value={targetDate}
-            placeholder='Tageted Date'
+            placeholder='Targeted Date'
             style={[styles.input, styles.goal]}
             onChangeText={text => handleOnChangeText(text, 'targetDate')}
           />
@@ -116,6 +121,17 @@ const BucketInputModal = ({ visible, onClose, onSubmit, bucket, isEdit }) => {
             style={[styles.input, styles.goal]}
             onChangeText={text => handleOnChangeText(text, 'icon')}
           />
+          <TouchableOpacity onPress={handleOpenPicker}
+          >
+          <AntDesign name="picture" size={50} color="black" />
+          </TouchableOpacity>
+          
+          <IconPickerModal
+          visible={IconmodalVisible}
+          closeIconModal={handleClosePicker}
+          /> 
+
+  
           <View style={styles.btnContainer}>
             <RoundIconBtn
               size={30} 
@@ -150,7 +166,6 @@ const styles = StyleSheet.create({
     borderRadius: 30,
     backgroundColor: '#ffe7df',
     marginHorizontal: 10,
-    height: '90%',
   },
   closeBtn:{
     //backgroundColor: 'black',

@@ -28,7 +28,10 @@ export default function App() {
     findUser();
   }, []);
 
+  
+
   const renderBucketScreen = props => <BucketScreen {...props} user={user} />;
+
 
   if (isAppFirstTimeOpen) return <Intro onFinish={findUser} />;
   return (

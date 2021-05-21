@@ -10,6 +10,7 @@ import {
   Keyboard,
   SafeAreaView,
   TouchableOpacity,
+  Image,
 } from 'react-native';
 import colors from '../misc/colors';
 import RoundIconBtn from './RoundIconBtn';
@@ -23,7 +24,7 @@ const BucketInputModal = ({ visible, onClose, onSubmit, bucket, isEdit }) => {
   const [goal, setGoal] = useState('');
   const [balance, setBalance] = useState('');
   const [targetDate, setTargetDate] = useState('');
-  const [icon, setIcon] = useState('');
+  const [icon, setIcon] = useState('22');
   const handleModalClose = () => {
     Keyboard.dismiss();
   };
@@ -43,7 +44,7 @@ const BucketInputModal = ({ visible, onClose, onSubmit, bucket, isEdit }) => {
     if (valueFor === 'goal') setGoal(text);
     if (valueFor === 'balance') setBalance(text);
     if (valueFor === 'targetDate') setTargetDate(text);
-    if (valueFor === 'icon') setIcon(imageMap.icons.house);
+    
   };
 
   const handleSubmit = () => {
@@ -75,7 +76,8 @@ const BucketInputModal = ({ visible, onClose, onSubmit, bucket, isEdit }) => {
 
   const [IconmodalVisible, setIconModalVisible] = useState(false);
   const handleOpenPicker = () => setIconModalVisible(true);
-
+  const handleIconPicked = (pickedicon) => setIcon(pickedicon)
+  
 
   return (
     <>
@@ -115,20 +117,26 @@ const BucketInputModal = ({ visible, onClose, onSubmit, bucket, isEdit }) => {
             style={[styles.input, styles.goal]}
             onChangeText={text => handleOnChangeText(text, 'targetDate')}
           />
-          <TextInput
-            value={icon}
-            placeholder='icon name (icon-example.png)'
-            style={[styles.input, styles.goal]}
-            onChangeText={text => handleOnChangeText(text, 'icon')}
-          />
+          
           <TouchableOpacity onPress={handleOpenPicker}
           >
-          <AntDesign name="picture" size={50} color="black" />
+          {icon ? (
+              <Image style={styles.icon} source = {icon} />
+            ) : ( <Image style={styles.icon} source = {require('./../../assets/icons/picture.png')} />
+            )}
+      {/*  <Image style={styles.icon} source = {require('./../../assets/icons/picture.png')} /> 
+      */}
+
+          
+            
           </TouchableOpacity>
+          <Text>{icon}</Text>
+ 
           
           <IconPickerModal
           visible={IconmodalVisible}
           closeIconModal={ () => setIconModalVisible(false)}
+          handleIconPicked={handleIconPicked}
           /> 
 
   
@@ -174,6 +182,10 @@ const styles = StyleSheet.create({
     top: 10,
 
   },
+  icon: {
+    height:50,
+    width: 50,
+},
   modalTitle:{
     fontSize:22,
     fontWeight: 'bold',

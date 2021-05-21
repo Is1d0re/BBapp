@@ -20,7 +20,7 @@ import imageMap from '../misc/imageMap';
 
 
 
-const IconPickerModal = ({visible, closeIconModal}) => {
+const IconPickerModal = ({visible, closeIconModal, handleIconPicked}) => {
     const [selectedIcon, setSelectedIcon] = useState(null);
     
     const Icon = ({ item, onPress}) => (
@@ -33,7 +33,7 @@ const IconPickerModal = ({visible, closeIconModal}) => {
       return (
         <Icon
           item={item}
-          onPress={() => {setSelectedIcon(item.path); closeIconModal()}}
+          onPress={() => {setSelectedIcon(item.path); closeIconModal(); handleIconPicked(item.path)}}
           
         />
       );

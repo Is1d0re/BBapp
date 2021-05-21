@@ -10,24 +10,55 @@ import {
   Keyboard,
   SafeAreaView,
   TouchableOpacity,
+  FlatList,
+  Image,
 } from 'react-native';
 import colors from '../misc/colors';
 import RoundIconBtn from './RoundIconBtn';
 import CloseIconBtn from './CloseIconBtn';
 import imageMap from '../misc/imageMap';
 
+
+
 const IconPickerModal = ({visible, closeIconModal}) => {
-  
+    const [selectedIcon, setSelectedIcon] = useState(null);
+    
+    const Icon = ({ item, onPress}) => (
+        <TouchableOpacity onPress={onPress} style={styles.icon}>
+          <Image style={styles.icon} source = {JSON.parse(item.path)} />
+        </TouchableOpacity>
+      );
+
+    const renderIcon = ({ item }) => {
+      return (
+        <Icon
+          item={item}
+          onPress={() => {setSelectedIcon(item.path); closeIconModal()}}
+          
+        />
+      );
+    };
   return (
       <Modal visible={visible} animationType='slide'>
           <SafeAreaView />
-          <CloseIconBtn
+          <Text>{selectedIcon}</Text>
+          
+        <View style={styles.wrapper}>
+        <CloseIconBtn
                 style={styles.closeBtn}
                 antIconName='close'
                 onPress={closeIconModal}
                 
               />
-        <Text>icon picker modal</Text>
+         <FlatList
+        data={imageMap}
+        renderItem={renderIcon}
+        keyExtractor={(item) => item.name}
+        
+      />
+        
+        
+        </View>
       </Modal>
   )
 };
@@ -35,6 +66,17 @@ const IconPickerModal = ({visible, closeIconModal}) => {
 const styles = StyleSheet.create({
   wrapper:{
     flex: 1,
+  },
+  icon: {
+    height:50,
+    width: 50,
+    marginRight: 25,
+    borderWidth: 1,
+    borderColor: 'black',
+},
+  gridRow: {
+      flexDirection: 'row',
+      paddingTop: 50,
   },
   container: {
     paddingHorizontal: 20,
@@ -49,7 +91,8 @@ const styles = StyleSheet.create({
     //backgroundColor: 'black',
     position: 'absolute',
     right: 10,
-    top: 50,
+    top: 10,
+    zIndex: 1,
 
   },
   modalTitle:{

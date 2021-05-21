@@ -75,7 +75,7 @@ const BucketInputModal = ({ visible, onClose, onSubmit, bucket, isEdit }) => {
 
   const [IconmodalVisible, setIconModalVisible] = useState(false);
   const handleOpenPicker = () => setIconModalVisible(true);
-  const handleClosePicker = () => setIconModalVisible(false);
+
 
   return (
     <>
@@ -128,7 +128,7 @@ const BucketInputModal = ({ visible, onClose, onSubmit, bucket, isEdit }) => {
           
           <IconPickerModal
           visible={IconmodalVisible}
-          closeIconModal={handleClosePicker}
+          closeIconModal={ () => setIconModalVisible(false)}
           /> 
 
   

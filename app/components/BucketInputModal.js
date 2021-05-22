@@ -19,6 +19,7 @@ import imageMap from '../misc/imageMap';
 import { AntDesign } from '@expo/vector-icons';
 import IconPickerModal from './IconPickerModal';
 
+
 const BucketInputModal = ({ visible, onClose, onSubmit, bucket, isEdit }) => {
   const [title, setTitle] = useState('');
   const [goal, setGoal] = useState('');

@@ -25,7 +25,7 @@ const BucketInputModal = ({ visible, onClose, onSubmit, bucket, isEdit }) => {
   const [goal, setGoal] = useState('');
   const [balance, setBalance] = useState('');
   const [targetDate, setTargetDate] = useState('');
-  const [icon, setIcon] = useState('22');
+  const [icon, setIcon] = useState('');
   const handleModalClose = () => {
     Keyboard.dismiss();
   };
@@ -113,12 +113,12 @@ const BucketInputModal = ({ visible, onClose, onSubmit, bucket, isEdit }) => {
             onChangeText={text => handleOnChangeText(text, 'balance')}
           />
           
-          <Text> {targetDate} </Text>
+          
           
           <TouchableOpacity onPress={handleOpenPicker}
           >
           {icon ? (
-              <Image style={styles.icon} source = {icon} />
+              <Image style={styles.icon} source = {JSON.parse(icon)} />
             ) : ( <Image style={styles.icon} source = {require('./../../assets/icons/picture.png')} />
             )}
       {/*  <Image style={styles.icon} source = {require('./../../assets/icons/picture.png')} /> 

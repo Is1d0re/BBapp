@@ -111,12 +111,8 @@ const BucketInputModal = ({ visible, onClose, onSubmit, bucket, isEdit }) => {
             style={[styles.input, styles.goal]}
             onChangeText={text => handleOnChangeText(text, 'balance')}
           />
-          <TextInput
-            value={targetDate}
-            placeholder='Targeted Date'
-            style={[styles.input, styles.goal]}
-            onChangeText={text => handleOnChangeText(text, 'targetDate')}
-          />
+          
+          <Text> {targetDate} </Text>
           
           <TouchableOpacity onPress={handleOpenPicker}
           >

@@ -11,6 +11,8 @@ import {
   SafeAreaView,
   TouchableOpacity,
   Image,
+  DatePickerIOS,
+  Button,
 } from 'react-native';
 import colors from '../misc/colors';
 import RoundIconBtn from './RoundIconBtn';
@@ -18,6 +20,7 @@ import CloseIconBtn from './CloseIconBtn';
 import imageMap from '../misc/imageMap';
 import { AntDesign } from '@expo/vector-icons';
 import IconPickerModal from './IconPickerModal';
+import DatePickerModal from './DatePickerModal';
 
 
 const BucketInputModal = ({ visible, onClose, onSubmit, bucket, isEdit }) => {
@@ -44,7 +47,6 @@ const BucketInputModal = ({ visible, onClose, onSubmit, bucket, isEdit }) => {
     if (valueFor === 'title') setTitle(text);
     if (valueFor === 'goal') setGoal(text);
     if (valueFor === 'balance') setBalance(text);
-    if (valueFor === 'targetDate') setTargetDate(text);
     
   };
 
@@ -78,8 +80,12 @@ const BucketInputModal = ({ visible, onClose, onSubmit, bucket, isEdit }) => {
   const [IconmodalVisible, setIconModalVisible] = useState(false);
   const handleOpenPicker = () => setIconModalVisible(true);
   const handleIconPicked = (pickedicon) => setIcon(pickedicon)
-  
 
+  const [DatemodalVisible, setDateModalVisible] = useState(false);
+  const handleOpenDatePicker = () => setDateModalVisible(true);
+  const handleDatePicked = (pickeddate) => {setTargetDate(pickeddate)};
+  
+  
   return (
     <>
       <Modal visible={visible}>
@@ -113,18 +119,15 @@ const BucketInputModal = ({ visible, onClose, onSubmit, bucket, isEdit }) => {
             onChangeText={text => handleOnChangeText(text, 'balance')}
           />
           
-          
-          
+         <Button title='Select a Target Date' onPress={handleOpenDatePicker} />
+         
+         
           <TouchableOpacity onPress={handleOpenPicker}
           >
           {icon ? (
               <Image style={styles.icon} source = {JSON.parse(icon)} />
             ) : ( <Image style={styles.icon} source = {require('./../../assets/icons/picture.png')} />
             )}
-      {/*  <Image style={styles.icon} source = {require('./../../assets/icons/picture.png')} /> 
-      */}
-
-          
             
           </TouchableOpacity>
           <Text>{icon}</Text>
@@ -135,6 +138,12 @@ const BucketInputModal = ({ visible, onClose, onSubmit, bucket, isEdit }) => {
           closeIconModal={ () => setIconModalVisible(false)}
           handleIconPicked={handleIconPicked}
           /> 
+
+          <DatePickerModal
+          visible={DatemodalVisible}
+          closeDateModal={ () => setDateModalVisible(false)}
+          handleDatePicked={handleDatePicked}
+          />  
 
   
           <View style={styles.btnContainer}>

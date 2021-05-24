@@ -86,7 +86,7 @@ const BucketDetail = props => {
     setIsEdit(true);
     setShowModal(true);
   };
-
+ 
   return (
     <>
       <ScrollView

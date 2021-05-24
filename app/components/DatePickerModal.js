@@ -12,51 +12,67 @@ import {
   TouchableOpacity,
   FlatList,
   Image,
+  Button,
+  Platform,
 } from 'react-native';
 import colors from '../misc/colors';
 import RoundIconBtn from './RoundIconBtn';
 import CloseIconBtn from './CloseIconBtn';
-import imageMap from '../misc/imageMap';
+import DateTimePicker from '@react-native-community/datetimepicker';
 
 
 
-const IconPickerModal = ({visible, closeIconModal, handleIconPicked}) => {
-    
-    const Icon = ({ item, onPress}) => (
-        <TouchableOpacity onPress={onPress} style={styles.icon}>
-          <Image style={styles.icon} source = {JSON.parse(item.path)} />
-        </TouchableOpacity>
-      );
+const DatePickerModal = ({visible, closeDateModal, handleDatePicked}) => {
+  const [date, setDate] = useState(new Date);
+ 
+  const onChange = (event, selectedDate) => {
+    const currentDate = selectedDate || date;
+    setDate(currentDate);
+  
+  };
 
-    const renderIcon = ({ item }) => {
-      return (
-        <Icon
-          item={item}
-          onPress={() => {closeIconModal(); handleIconPicked(item.path)}}
-          
-        />
-      );
-    };
+
+  const showTimepicker = () => {
+    showMode('time');
+  };
+  const dateString = (date.toDateString());
+  const todayDate = new Date;
+  const diffDates = (date - todayDate);
+  const msInMonth = 1000 * 3600 * 24 * 30; 
+  const goal = 2000;
+  const balance = 100;
+  const amountPermMonth = (((goal - balance)/(diffDates/msInMonth)).toFixed(2));
+
+
   return (
       <Modal visible={visible} animationType='slide'>
           <SafeAreaView />
-          
           
         <View style={styles.wrapper}>
         <CloseIconBtn
                 style={styles.closeBtn}
                 antIconName='close'
-                onPress={closeIconModal}
+                onPress={closeDateModal}
                 
               />
-         <FlatList
-        data={imageMap}
-        renderItem={renderIcon}
-        keyExtractor={(item) => item.name}
+         
+         <DateTimePicker
+          testID="dateTimePicker"
+          value={date}
+          mode='date'
+          is24Hour={true}
+          display="spinner"
+          onChange={onChange}
+          minimumDate={todayDate}
+        />
+        <Button title='done' onPress={() => {closeDateModal(); handleDatePicked(date); console.log(date)}} />
+        <Text>Target Date: {dateString} </Text>
+        <Text>Goal Amount: ${goal}</Text>
+        <Text>Current Balance: ${balance} </Text>
+        <Text>Months until your date: {(diffDates/msInMonth).toFixed(2)}</Text>
+        <Text>You need to save ${amountPermMonth} per Month </Text>
         
-      />
-        
-        
+      
         </View>
       </Modal>
   )
@@ -128,4 +144,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default IconPickerModal;
+export default DatePickerModal;

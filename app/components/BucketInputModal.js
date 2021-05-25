@@ -51,9 +51,18 @@ const BucketInputModal = ({ visible, onClose, onSubmit, bucket, isEdit }) => {
     
   };
 
+  const handleCheck = () => {
+    if (!title.trim() && !goal.trim() && !balance.trim() && !targetDate.trim() && !icon.trim()){
+      alert('gotta fill out everything')
+    } else {
+      handleSubmit();
+    }
+
+  };
+
   const handleSubmit = () => {
     if (!title.trim() && !goal.trim() && !balance.trim() && !targetDate.trim() && !icon.trim()) return onClose();
-
+    
     if (isEdit) {
       onSubmit(title, goal, balance, targetDate, icon, Date.now());
     } else {
@@ -99,7 +108,7 @@ const BucketInputModal = ({ visible, onClose, onSubmit, bucket, isEdit }) => {
                 onPress={closeModal}
                 
               />
-        {title ? (
+        {(isEdit) ? (
           <Text style={styles.modalTitle}>Bucket Editor!</Text>
           ) : <Text style={styles.modalTitle}>Add a Bucket!</Text>
         } 
@@ -157,7 +166,7 @@ const BucketInputModal = ({ visible, onClose, onSubmit, bucket, isEdit }) => {
             <RoundIconBtn
               size={30} 
               antIconName='check'
-              onPress={handleSubmit}
+              onPress={handleCheck}
             />
               <RoundIconBtn
                 size={30}

@@ -29,7 +29,7 @@ export default function App() {
   }, []);
 
   
-//AsyncStorage.clear()
+// AsyncStorage.clear()
 
   const renderBucketScreen = props => <BucketScreen {...props} user={user} />;
 

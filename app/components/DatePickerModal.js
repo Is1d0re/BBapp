@@ -19,29 +19,29 @@ import colors from '../misc/colors';
 import RoundIconBtn from './RoundIconBtn';
 import CloseIconBtn from './CloseIconBtn';
 import DateTimePicker from '@react-native-community/datetimepicker';
-
+import xtype from 'xtypejs'
 
 
 const DatePickerModal = ({visible, closeDateModal, handleDatePicked}) => {
-  const [date, setDate] = useState(new Date);
+  const [date, setDate] = useState();
+  const [selectedDate, setSelectedDate] = useState(new Date());
  
   const onChange = (event, selectedDate) => {
     const currentDate = selectedDate || date;
-    setDate(currentDate);
+    setDate(JSON.stringify(currentDate));
+    setSelectedDate(currentDate)
   
   };
 
-
-  const showTimepicker = () => {
-    showMode('time');
-  };
-  const dateString = (date.toDateString());
+  const dateString = (selectedDate.toDateString());
   const todayDate = new Date;
   const diffDates = (date - todayDate);
   const msInMonth = 1000 * 3600 * 24 * 30; 
   const goal = 2000;
   const balance = 100;
   const amountPermMonth = (((goal - balance)/(diffDates/msInMonth)).toFixed(2));
+  
+
 
 
   return (
@@ -58,7 +58,7 @@ const DatePickerModal = ({visible, closeDateModal, handleDatePicked}) => {
          
          <DateTimePicker
           testID="dateTimePicker"
-          value={date}
+          value={selectedDate}
           mode='date'
           is24Hour={true}
           display="spinner"
@@ -71,6 +71,7 @@ const DatePickerModal = ({visible, closeDateModal, handleDatePicked}) => {
         <Text>Current Balance: ${balance} </Text>
         <Text>Months until your date: {(diffDates/msInMonth).toFixed(2)}</Text>
         <Text>You need to save ${amountPermMonth} per Month </Text>
+        
         
       
         </View>

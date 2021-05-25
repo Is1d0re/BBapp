@@ -86,7 +86,15 @@ const BucketDetail = props => {
     setIsEdit(true);
     setShowModal(true);
   };
- 
+  const targetDateObject = new Date(JSON.parse(bucket.targetDate));
+  const goalNumber = Number(bucket.goal);
+  const balanceNumber = Number(bucket.balance);
+  const todayDate = new Date;
+  const diffDates = (targetDateObject - todayDate);
+  const msInMonth = 1000 * 3600 * 24 * 30; 
+  const amountPermMonth = Math.round((goalNumber - balanceNumber)/(diffDates/msInMonth));
+
+
   return (
     <>
       <ScrollView
@@ -99,9 +107,14 @@ const BucketDetail = props => {
         </Text>
         <Image style={styles.icon} source = {JSON.parse(bucket.icon)} /> 
         <Text style={styles.title}>{bucket.title}</Text>
-        <Text style={styles.goal}>{bucket.goal}</Text>
-        <Text style={styles.goal}>{bucket.balance}</Text>
-        <Text style={styles.goal}>{bucket.targetDate}</Text>
+        <Text style={styles.goal}>Goal Amount: ${bucket.goal}</Text>
+        <Text style={styles.goal}>Current Bucket Balance: ${bucket.balance}</Text>
+        <Text style={styles.goal}>Target Date: {(targetDateObject).toDateString()}</Text>
+
+        
+        
+        <Text style={styles.goal}>Months until your date: {(diffDates/msInMonth).toFixed(2)}</Text>
+        <Text style={styles.goal}>You need to save ${amountPermMonth} per Month </Text>
 
       </ScrollView>
       <View style={styles.btnContainer}>

@@ -22,12 +22,12 @@ import { AntDesign } from '@expo/vector-icons';
 import IconPickerModal from './IconPickerModal';
 import DatePickerModal from './DatePickerModal';
 
-
+//const [ModalTitle, setModalTitle] = useState("Add Bucket")
 const BucketInputModal = ({ visible, onClose, onSubmit, bucket, isEdit }) => {
   const [title, setTitle] = useState('');
   const [goal, setGoal] = useState('');
   const [balance, setBalance] = useState('');
-  const [targetDate, setTargetDate] = useState('');
+  const [targetDate, setTargetDate] = useState();
   const [icon, setIcon] = useState('');
   const handleModalClose = () => {
     Keyboard.dismiss();
@@ -40,6 +40,7 @@ const BucketInputModal = ({ visible, onClose, onSubmit, bucket, isEdit }) => {
       setBalance(bucket.balance);
       setTargetDate(bucket.targetDate);
       setIcon(bucket.icon);
+     // setModalTitle("Modal Editor")
     }
   }, [isEdit]);
 
@@ -84,8 +85,7 @@ const BucketInputModal = ({ visible, onClose, onSubmit, bucket, isEdit }) => {
   const [DatemodalVisible, setDateModalVisible] = useState(false);
   const handleOpenDatePicker = () => setDateModalVisible(true);
   const handleDatePicked = (pickeddate) => {setTargetDate(pickeddate)};
-  
-  
+
   return (
     <>
       <Modal visible={visible}>
@@ -99,7 +99,7 @@ const BucketInputModal = ({ visible, onClose, onSubmit, bucket, isEdit }) => {
                 onPress={closeModal}
                 
               />
-        <Text style={styles.modalTitle}>Add New Savings Bucket</Text>
+        <Text style={styles.modalTitle}>the title</Text>
           <TextInput
             value={title}
             onChangeText={text => handleOnChangeText(text, 'title')}
@@ -121,7 +121,11 @@ const BucketInputModal = ({ visible, onClose, onSubmit, bucket, isEdit }) => {
           
          <Button title='Select a Target Date' onPress={handleOpenDatePicker} />
          
-         
+         {targetDate ? (
+          <Text>{(new Date(JSON.parse(targetDate))).toDateString()}</Text>
+         ): null
+         }
+
           <TouchableOpacity onPress={handleOpenPicker}
           >
           {icon ? (

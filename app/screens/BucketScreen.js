@@ -19,6 +19,7 @@ import RoundIconBtn from '../components/RoundIconBtn';
 import SearchBar from '../components/SearchBar';
 import { useBuckets } from '../contexts/BucketProvider';
 import colors from '../misc/colors';
+import xtype from 'xtypejs'
 
 const reverseData = data => {
   return data.sort((a, b) => {
@@ -52,6 +53,8 @@ const BucketScreen = ({ user, navigation }) => {
   const reverseBuckets = reverseData(buckets);
 
   const handleOnSubmit = async (title, goal, balance, targetDate, icon) => {
+    //console.log(xtype(targetDate));
+    const JSONtargetDate = JSON.stringify(targetDate);
     const bucket = { id: Date.now(), title , goal, balance, targetDate, icon, time: Date.now() };
     const updatedBuckets = [...buckets, bucket];
     setBuckets(updatedBuckets);

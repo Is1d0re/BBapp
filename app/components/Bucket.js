@@ -9,9 +9,11 @@ import {
 } from 'react-native';
 import colors from '../misc/colors';
 import imageMap from '../misc/imageMap';
+import xtype from 'xtypejs'
 
 const Bucket = ({ item, onPress }) => {
   const { title, goal, balance, targetDate, icon } = item;
+  const targetDateObject = new Date(JSON.parse(targetDate));
   return (
     <TouchableOpacity onPress={onPress} style={styles.container}>
       <View style={styles.bucketLeft}>
@@ -24,7 +26,8 @@ const Bucket = ({ item, onPress }) => {
       </Text>
       <Text>{goal}</Text>
       <Text>{balance}</Text>
-      <Text>{targetDate}</Text>
+
+    <Text>{(targetDateObject).toDateString()}</Text>
       </View>
     </TouchableOpacity>
   );

@@ -99,7 +99,10 @@ const BucketInputModal = ({ visible, onClose, onSubmit, bucket, isEdit }) => {
                 onPress={closeModal}
                 
               />
-        <Text style={styles.modalTitle}>the title</Text>
+        {title ? (
+          <Text style={styles.modalTitle}>Bucket Editor!</Text>
+          ) : <Text style={styles.modalTitle}>Add a Bucket!</Text>
+        } 
           <TextInput
             value={title}
             onChangeText={text => handleOnChangeText(text, 'title')}

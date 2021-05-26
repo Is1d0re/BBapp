@@ -123,12 +123,14 @@ const BucketInputModal = ({ visible, onClose, onSubmit, bucket, isEdit }) => {
             placeholder='Goal Amount'
             style={[styles.input, styles.goal]}
             onChangeText={text => handleOnChangeText(text, 'goal')}
+            keyboardType='numeric'
           />
           <TextInput
             value={balance}
             placeholder='Current Balance'
             style={[styles.input, styles.goal]}
             onChangeText={text => handleOnChangeText(text, 'balance')}
+            keyboardType='numeric'
           />
           
          <Button title='Select a Target Date' onPress={handleOpenDatePicker} />

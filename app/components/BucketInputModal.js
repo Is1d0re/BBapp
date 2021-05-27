@@ -59,7 +59,7 @@ const BucketInputModal = ({ visible, onClose, onSubmit, bucket, isEdit }) => {
       alert('you must select an icon')
       return;
     } if (typeof targetDate === 'undefined') {
-      alert('you must select a date')
+      alert('you must select a date in the future')
       return;
     }
       handleSubmit();

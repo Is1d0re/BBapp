@@ -22,13 +22,13 @@ import { AntDesign } from '@expo/vector-icons';
 import IconPickerModal from './IconPickerModal';
 import DatePickerModal from './DatePickerModal';
 
-//const [ModalTitle, setModalTitle] = useState("Add Bucket")
 const BucketInputModal = ({ visible, onClose, onSubmit, bucket, isEdit }) => {
   const [title, setTitle] = useState('');
   const [goal, setGoal] = useState('');
   const [balance, setBalance] = useState('');
   const [targetDate, setTargetDate] = useState();
   const [icon, setIcon] = useState('');
+  const [transactions, setTransactions] = useState([]);
   const handleModalClose = () => {
     Keyboard.dismiss();
   };
@@ -40,7 +40,7 @@ const BucketInputModal = ({ visible, onClose, onSubmit, bucket, isEdit }) => {
       setBalance(bucket.balance);
       setTargetDate(bucket.targetDate);
       setIcon(bucket.icon);
-     // setModalTitle("Modal Editor")
+      setTransactions(bucket.transactions);
     }
   }, [isEdit]);
 
@@ -61,17 +61,18 @@ const BucketInputModal = ({ visible, onClose, onSubmit, bucket, isEdit }) => {
   };
 
   const handleSubmit = () => {
-    if (!title.trim() && !goal.trim() && !balance.trim() && !targetDate.trim() && !icon.trim()) return onClose();
+    if (!title.trim() && !goal.trim() && !balance.trim() && !targetDate.trim() && !icon.trim() && !transactions.trim()) return onClose();
     
     if (isEdit) {
-      onSubmit(title, goal, balance, targetDate, icon, Date.now());
+      onSubmit(title, goal, balance, targetDate, icon, transactions, Date.now());
     } else {
-      onSubmit(title, goal, balance, targetDate, icon);
+      onSubmit(title, goal, balance, targetDate, icon, transactions);
       setTitle('');
       setGoal('');
       setBalance('');
       setTargetDate('');
       setIcon('');
+      setTransactions();
     }
     onClose();
   };
@@ -83,6 +84,7 @@ const BucketInputModal = ({ visible, onClose, onSubmit, bucket, isEdit }) => {
       setBalance('');
       setTargetDate('');
       setIcon('');
+      setTransactions();
     }
     onClose();
   };
@@ -94,6 +96,16 @@ const BucketInputModal = ({ visible, onClose, onSubmit, bucket, isEdit }) => {
   const [DatemodalVisible, setDateModalVisible] = useState(false);
   const handleOpenDatePicker = () => setDateModalVisible(true);
   const handleDatePicked = (pickeddate) => {setTargetDate(pickeddate)};
+
+  
+  const addTransaction = () => {
+    const month = 'april'
+    const amount = '900'
+    const transaction = {id: Date.now(), month, amount};
+    // const updatedTransactions = [...transactions, transaction];
+    transactions.unshift(JSON.stringify(transaction));
+    console.log(transactions);
+  };
 
   return (
     <>
@@ -146,7 +158,10 @@ const BucketInputModal = ({ visible, onClose, onSubmit, bucket, isEdit }) => {
             )}
             
           </TouchableOpacity>
-          <Text>{icon}</Text>
+
+          
+          <Button title='add transaction' onPress={addTransaction} />
+          
  
           
           <IconPickerModal

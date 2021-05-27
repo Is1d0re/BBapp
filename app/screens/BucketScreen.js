@@ -52,10 +52,10 @@ const BucketScreen = ({ user, navigation }) => {
 
   const reverseBuckets = reverseData(buckets);
 
-  const handleOnSubmit = async (title, goal, balance, targetDate, icon) => {
-    //console.log(xtype(targetDate));
+  const handleOnSubmit = async (title, goal, balance, targetDate, icon, transactions) => {
     const JSONtargetDate = JSON.stringify(targetDate);
-    const bucket = { id: Date.now(), title , goal, balance, targetDate, icon, time: Date.now() };
+    const JSONtransactions = JSON.stringify(transactions)
+    const bucket = { id: Date.now(), title , goal, balance, targetDate, icon, transactions, time: Date.now() };
     const updatedBuckets = [...buckets, bucket];
     setBuckets(updatedBuckets);
     await AsyncStorage.setItem('buckets', JSON.stringify(updatedBuckets));
@@ -96,6 +96,8 @@ const BucketScreen = ({ user, navigation }) => {
       <SafeAreaView />
       <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
         <View style={styles.container}>
+        {console.log(buckets)}
+
           <Text style={styles.header}>{`Good ${greet} ${user.name}`}</Text>
           {buckets.length ? (
             <SearchBar

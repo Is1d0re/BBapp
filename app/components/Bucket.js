@@ -12,7 +12,7 @@ import imageMap from '../misc/imageMap';
 import xtype from 'xtypejs'
 
 const Bucket = ({ item, onPress }) => {
-  const { title, goal, balance, targetDate, icon } = item;
+  const { title, goal, balance, targetDate, icon, transactions } = item;
   const targetDateObject = new Date(JSON.parse(targetDate));
   return (
     <TouchableOpacity onPress={onPress} style={styles.container}>

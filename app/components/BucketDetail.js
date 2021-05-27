@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { ScrollView, StyleSheet, Text, View, Alert, Image, FlatList } from 'react-native';
+import { ScrollView, StyleSheet, Text, View, Alert, Image, FlatList, SafeAreaView } from 'react-native';
 import { useHeaderHeight } from '@react-navigation/stack';
 import colors from '../misc/colors';
 import RoundIconBtn from './RoundIconBtn';
@@ -87,7 +87,6 @@ const BucketDetail = props => {
     setIsEdit(true);
     setShowModal(true);
   };
-  // const transactionsObject = [JSON.parse(bucket.transactions[0])];
   const targetDateObject = new Date(JSON.parse(bucket.targetDate));
   const goalNumber = Number(bucket.goal);
   const balanceNumber = Number(bucket.balance);
@@ -95,18 +94,17 @@ const BucketDetail = props => {
   const diffDates = (targetDateObject - todayDate);
   const msInMonth = 1000 * 3600 * 24 * 30; 
   const amountPermMonth = Math.round((goalNumber - balanceNumber)/(diffDates/msInMonth));
-  
-  var transactionData = {}
-  for (var i in bucket.transactions) {
-    var datum = JSON.parse(bucket.transactions[i]);
-    transactionData[datum.key] = datum.val
-}
+  const data = bucket.transactions
 
 
   return (
     <>
-      <ScrollView
-        contentContainerStyle={[styles.container, { paddingTop: headerHeight }]}
+    
+    {console.log(data)}
+    {console.log(bucket)}
+    
+      <View
+        style={[styles.container, { paddingTop: headerHeight, marginTop: 30 }]}
       >
         <Text style={styles.time}>
           {bucket.isUpdated
@@ -124,19 +122,20 @@ const BucketDetail = props => {
         <Text style={styles.goal}>Months until your date: {(diffDates/msInMonth).toFixed(2)}</Text>
         <Text style={styles.goal}>You need to save ${amountPermMonth} per Month </Text>
 
-        <Text>{(JSON.parse(bucket.transactions[0]).amount )}</Text>
-        {console.log(transactionData)}
-        {/* <FlatList
-              data={transactionData}
-              keyExtractor={item => item.id}
+      </View>
+      <View >
+      {bucket.transactions ? ( 
+      <FlatList
+              data={data}
+              keyExtractor={item => item.transactionID.toString()}
               renderItem={({ item }) => (
                 <Text>{item.month} : {item.amount} </Text>
                 
               )}
-            /> */}
-
-            {/* {console.log(bucket)} */}
-      </ScrollView>
+            />) : <Text>Make a deposit!</Text>
+      }
+      </View>
+          
       <View style={styles.btnContainer}>
         <RoundIconBtn
           antIconName='delete'

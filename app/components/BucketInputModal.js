@@ -27,7 +27,7 @@ const BucketInputModal = ({ visible, onClose, onSubmit, bucket, isEdit }) => {
   const [goal, setGoal] = useState('');
   const [balance, setBalance] = useState('');
   const [targetDate, setTargetDate] = useState();
-  const [icon, setIcon] = useState('');
+  const [icon, setIcon] = useState();
   const [transactions, setTransactions] = useState([]);
   const handleModalClose = () => {
     Keyboard.dismiss();
@@ -52,11 +52,17 @@ const BucketInputModal = ({ visible, onClose, onSubmit, bucket, isEdit }) => {
   };
 
   const handleCheck = () => {
-    if (!title.trim() && !goal.trim() && !balance.trim() && !targetDate.trim() && !icon.trim()){
-      alert('gotta fill out everything')
-    } else {
-      handleSubmit();
+    if (!title.trim() && !goal.trim() && !balance.trim()){
+      alert('gotta fill out everything');
+      return;
+    } if (typeof icon === 'undefined') {
+      alert('you must select an icon')
+      return;
+    } if (typeof targetDate === 'undefined') {
+      alert('you must select a date')
+      return;
     }
+      handleSubmit();
 
   };
 
@@ -70,9 +76,9 @@ const BucketInputModal = ({ visible, onClose, onSubmit, bucket, isEdit }) => {
       setTitle('');
       setGoal('');
       setBalance('');
-      setTargetDate('');
-      setIcon('');
-      setTransactions();
+      setTargetDate();
+      setIcon();
+      setTransactions([]);
     }
     onClose();
   };
@@ -82,9 +88,9 @@ const BucketInputModal = ({ visible, onClose, onSubmit, bucket, isEdit }) => {
       setTitle('');
       setGoal('');
       setBalance('');
-      setTargetDate('');
-      setIcon('');
-      setTransactions();
+      setTargetDate();
+      setIcon();
+      setTransactions([]);
     }
     onClose();
   };
@@ -99,12 +105,17 @@ const BucketInputModal = ({ visible, onClose, onSubmit, bucket, isEdit }) => {
 
   
   const addTransaction = () => {
-    const month = 'april'
-    const amount = '900'
-    const transaction = {id: Date.now(), month, amount};
-    // const updatedTransactions = [...transactions, transaction];
-    transactions.unshift(JSON.stringify(transaction));
-    console.log(transactions);
+    const month = 'may';
+    const amount = '200';
+    const transactionID = Date.now();
+    const transaction = {transactionID, month, amount};
+    const updatedTransactions = [...transactions, transaction];
+    // transactions.unshift(JSON.stringify(transaction));
+    setTransactions(updatedTransactions);
+    const balanceNumber = Number(balance)
+    const newBalance = balanceNumber + Number(amount) 
+    setBalance(JSON.stringify(newBalance));
+    console.log(updatedTransactions);
   };
 
   return (

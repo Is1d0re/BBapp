@@ -176,33 +176,6 @@ const BucketInputModal = ({ visible, onClose, onSubmit, bucket, isEdit }) => {
           </TouchableOpacity>
 
           
-          {/* <Button title='add transaction' onPress={addTransaction} />
-          
-          <Text style={styles.modalTitle}>Manage Balance for {title} Bucket!</Text>
-          
-          <TextInput
-            value={month}
-            placeholder='What month?'
-            style={[styles.input, styles.goal]}
-            onChangeText={text => handleOnChangeText(text, 'month')}
-          />
-
-          <TextInput
-            value={amount}
-            placeholder='Add or subtract from balance (40 or -40)'
-            style={[styles.input, styles.goal]}
-            onChangeText={text => handleOnChangeText(text, 'amount')}
-          />
-
-          <FlatList
-              data={pendingTransactions}
-              keyExtractor={item => item.transactionID.toString()}
-              renderItem={({ item }) => (
-                <Text>{item.month} : {item.amount} </Text>
-                
-              )}
-            /> */}
-          
           <IconPickerModal
           visible={IconmodalVisible}
           closeIconModal={ () => setIconModalVisible(false)}

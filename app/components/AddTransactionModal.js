@@ -159,6 +159,7 @@ const addTransaction = () => {
             placeholder='Add or subtract from balance (40 or -40)'
             style={[styles.input, styles.goal]}
             onChangeText={text => handleOnChangeText(text, 'amount')}
+            keyboardType='numeric'
             
           />
           

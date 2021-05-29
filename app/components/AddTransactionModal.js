@@ -154,6 +154,16 @@ const addTransaction = () => {
             <Picker.Item label="Select Month" value="" />
             <Picker.Item label="January" value="January" />
             <Picker.Item label="February" value="February" />
+            <Picker.Item label="March" value="March" />
+            <Picker.Item label="April" value="April" />
+            <Picker.Item label="May" value="May" />
+            <Picker.Item label="June" value="June" />
+            <Picker.Item label="July" value="July" />
+            <Picker.Item label="August" value="August" />
+            <Picker.Item label="September" value="September" />
+            <Picker.Item label="October" value="October" />
+            <Picker.Item label="November" value="November" />
+            <Picker.Item label="December" value="December" />
           </Picker>
 
           <TextInput

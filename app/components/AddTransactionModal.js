@@ -11,7 +11,6 @@ import {
   SafeAreaView,
   TouchableOpacity,
   Image,
-  DatePickerIOS,
   Button,
   FlatList,
 } from 'react-native';
@@ -22,6 +21,7 @@ import imageMap from '../misc/imageMap';
 import { AntDesign } from '@expo/vector-icons';
 import IconPickerModal from './IconPickerModal';
 import DatePickerModal from './DatePickerModal';
+import {Picker} from '@react-native-picker/picker';
 
 const AddTransactionModal = ({ visible, onClose, onSubmit, bucket, isEdit  }) => {
   const [title, setTitle] = useState('');
@@ -146,6 +146,16 @@ const addTransaction = () => {
               />
           <Text style={styles.modalTitle}>Manage Balance for {title} Bucket!</Text>
           
+          <Picker
+            selectedValue={month}
+            onValueChange={(itemValue, itemIndex) =>
+              setMonth(itemValue)
+            }>
+            <Picker.Item label="Select Month" value="" />
+            <Picker.Item label="January" value="January" />
+            <Picker.Item label="February" value="February" />
+          </Picker>
+
           <TextInput
             value={month}
             placeholder='What month?'

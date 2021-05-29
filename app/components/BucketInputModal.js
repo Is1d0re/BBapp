@@ -148,6 +148,7 @@ const BucketInputModal = ({ visible, onClose, onSubmit, bucket, isEdit }) => {
             placeholder='Goal Amount'
             style={[styles.input, styles.goal]}
             onChangeText={text => handleOnChangeText(text, 'goal')}
+            keyboardType = 'numeric'
           />
 
           {!transactions[0] ? (
@@ -156,6 +157,7 @@ const BucketInputModal = ({ visible, onClose, onSubmit, bucket, isEdit }) => {
             placeholder='Current Balance'
             style={[styles.input, styles.goal]}
             onChangeText={text => handleOnChangeText(text, 'balance')}
+            keyboardType = 'numeric'
           /> ) : null
           }
           

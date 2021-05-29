@@ -23,7 +23,7 @@ import { AntDesign } from '@expo/vector-icons';
 import IconPickerModal from './IconPickerModal';
 import DatePickerModal from './DatePickerModal';
 
-const BucketInputModal = ({ visible, onClose, onSubmit, bucket, isEdit }) => {
+const AddTransactionModal = ({ visible, onClose, onSubmit, bucket, isEdit  }) => {
   const [title, setTitle] = useState('');
   const [goal, setGoal] = useState('');
   const [balance, setBalance] = useState('');
@@ -33,6 +33,7 @@ const BucketInputModal = ({ visible, onClose, onSubmit, bucket, isEdit }) => {
   const [month, setMonth] = useState('');
   const [amount, setAmount] = useState('');
   const [pendingTransactions, setPendingTransactions] = useState([]);
+  
 
   const handleModalClose = () => {
     Keyboard.dismiss();
@@ -46,86 +47,96 @@ const BucketInputModal = ({ visible, onClose, onSubmit, bucket, isEdit }) => {
       setTargetDate(bucket.targetDate);
       setIcon(bucket.icon);
       setTransactions(bucket.transactions);
+      setMonth('');
+      setAmount('');
+      setPendingTransactions([]);
     }
   }, [isEdit]);
 
   const handleOnChangeText = (text, valueFor) => {
-    if (valueFor === 'title') setTitle(text);
-    if (valueFor === 'goal') setGoal(text);
-    if (valueFor === 'balance') setBalance(text);
-   
+    if (valueFor === 'month') setMonth(text);
+    if (valueFor === 'amount') setAmount(text);
+    
     
   };
 
-  const handleCheck = () => {
-    if (title === '') {
-      alert('must have a title');
-      return;
-    } 
-    if (goal === '') {
-      alert('must have a goal');
-      return;
-    } 
-    if (balance === '') {
-      alert('must have a balance');
-      return;
-    } 
-    if (typeof icon === 'undefined') {
-      alert('you must select an icon')
-      return;
-    } 
-    if (typeof targetDate === 'undefined') {
-      alert('you must select a date in the future')
-      return;
-    }
-      handleSubmit();
-
-  };
-
+ 
   const handleSubmit = () => {
     if (!title.trim() && !goal.trim() && !balance.trim() && !targetDate.trim() && !icon.trim() && !transactions.trim()) return onClose();
-    
+    if (!pendingTransactions[0]){
+        alert('no pending transactions to commit')
+        return
+    }
     if (isEdit) {
       onSubmit(title, goal, balance, targetDate, icon, transactions, Date.now());
     } else {
-      onSubmit(title, goal, balance, targetDate, icon, transactions);
-      setTitle('');
-      setGoal('');
-      setBalance('');
-      setTargetDate();
-      setIcon();
-      setTransactions([]);
-    }
+    onSubmit(title, goal, balance, targetDate, icon, transactions);
+    setTitle('');
+    setGoal('');
+    setBalance('');
+    setTargetDate();
+    setIcon();
+    setTransactions([]);
+    setMonth('');
+    setAmount('');
+    setPendingTransactions([]);
+    }    
     onClose();
   };
 
   const closeModal = () => {
-    if (!isEdit) {
+    if (isEdit) {
+      console.log('close modal isedit')
       setTitle('');
       setGoal('');
       setBalance('');
       setTargetDate();
       setIcon();
       setTransactions([]);
+      setMonth('');
+      setAmount('');
+      setPendingTransactions([]);
     }
     onClose();
   };
 
-  const [IconmodalVisible, setIconModalVisible] = useState(false);
-  const handleOpenPicker = () => setIconModalVisible(true);
-  const handleIconPicked = (pickedicon) => setIcon(pickedicon)
+//   const [IconmodalVisible, setIconModalVisible] = useState(false);
+//   const handleOpenPicker = () => setIconModalVisible(true);
+//   const handleIconPicked = (pickedicon) => setIcon(pickedicon)
 
-  const [DatemodalVisible, setDateModalVisible] = useState(false);
-  const handleOpenDatePicker = () => setDateModalVisible(true);
-  const handleDatePicked = (pickeddate) => {setTargetDate(pickeddate)};
-
-
+  
+const addTransaction = () => {
+  if (month ===''){
+    alert('please enter a month')
+    return;
+    } 
+  if (amount ===''){
+    alert('please enter an amount')
+    return;
+    } 
+  const transactionID = Date.now();
+  const transaction = {transactionID, month, amount};
+  const updatedTransactions = [...transactions, transaction];
+  // transactions.unshift(JSON.stringify(transaction));
+  setTransactions(updatedTransactions);
+  const balanceNumber = Number(balance)
+  const newBalance = balanceNumber + Number(amount) 
+  setBalance(JSON.stringify(newBalance));
+  // console.log(updatedTransactions);
+  setPendingTransactions([...pendingTransactions, transaction]);
+  setAmount('');
+  setMonth('');
+ 
+  
+  
+};
 
   return (
     <>
+    {console.log(transactions)}
       <Modal visible={visible}>
         <SafeAreaView />
-        
+
         <View style={styles.container}>
         <CloseIconBtn
                 style={styles.closeBtn}
@@ -133,51 +144,6 @@ const BucketInputModal = ({ visible, onClose, onSubmit, bucket, isEdit }) => {
                 onPress={closeModal}
                 
               />
-        {(isEdit) ? (
-          <Text style={styles.modalTitle}>Bucket Editor!</Text>
-          ) : <Text style={styles.modalTitle}>Add a Bucket!</Text>
-        } 
-          <TextInput
-            value={title}
-            onChangeText={text => handleOnChangeText(text, 'title')}
-            placeholder='Title'
-            style={[styles.input, styles.title]}
-          />
-          <TextInput
-            value={goal}
-            placeholder='Goal Amount'
-            style={[styles.input, styles.goal]}
-            onChangeText={text => handleOnChangeText(text, 'goal')}
-          />
-
-          {!transactions[0] ? (
-          <TextInput
-            value={balance}
-            placeholder='Current Balance'
-            style={[styles.input, styles.goal]}
-            onChangeText={text => handleOnChangeText(text, 'balance')}
-          /> ) : null
-          }
-          
-         <Button title='Select a Target Date' onPress={handleOpenDatePicker} />
-         
-         {targetDate ? (
-          <Text>{(new Date(JSON.parse(targetDate))).toDateString()}</Text>
-         ): null
-         }
-
-          <TouchableOpacity onPress={handleOpenPicker}
-          >
-          {icon ? (
-              <Image style={styles.icon} source = {JSON.parse(icon)} />
-            ) : ( <Image style={styles.icon} source = {require('./../../assets/icons/picture.png')} />
-            )}
-            
-          </TouchableOpacity>
-
-          
-          {/* <Button title='add transaction' onPress={addTransaction} />
-          
           <Text style={styles.modalTitle}>Manage Balance for {title} Bucket!</Text>
           
           <TextInput
@@ -185,6 +151,7 @@ const BucketInputModal = ({ visible, onClose, onSubmit, bucket, isEdit }) => {
             placeholder='What month?'
             style={[styles.input, styles.goal]}
             onChangeText={text => handleOnChangeText(text, 'month')}
+            
           />
 
           <TextInput
@@ -192,35 +159,19 @@ const BucketInputModal = ({ visible, onClose, onSubmit, bucket, isEdit }) => {
             placeholder='Add or subtract from balance (40 or -40)'
             style={[styles.input, styles.goal]}
             onChangeText={text => handleOnChangeText(text, 'amount')}
+            
           />
-
-          <FlatList
-              data={pendingTransactions}
-              keyExtractor={item => item.transactionID.toString()}
-              renderItem={({ item }) => (
-                <Text>{item.month} : {item.amount} </Text>
-                
-              )}
-            /> */}
           
-          <IconPickerModal
-          visible={IconmodalVisible}
-          closeIconModal={ () => setIconModalVisible(false)}
-          handleIconPicked={handleIconPicked}
-          /> 
 
-          <DatePickerModal
-          visible={DatemodalVisible}
-          closeDateModal={ () => setDateModalVisible(false)}
-          handleDatePicked={handleDatePicked}
-          />  
 
+          
+          <Button title='add transaction' onPress={addTransaction} />
   
           <View style={styles.btnContainer}>
             <RoundIconBtn
               size={30} 
               antIconName='check'
-              onPress={handleCheck}
+              onPress={() => {handleSubmit(); setPendingTransactions([])}}
             />
               <RoundIconBtn
                 size={30}
@@ -231,6 +182,14 @@ const BucketInputModal = ({ visible, onClose, onSubmit, bucket, isEdit }) => {
           </View>
           
         </View>
+        <FlatList
+              data={pendingTransactions}
+              keyExtractor={item => item.transactionID.toString()}
+              renderItem={({ item }) => (
+                <Text>{item.month} : {item.amount} </Text>
+                
+              )}
+            />
         <TouchableWithoutFeedback onPress={handleModalClose}>
           <View style={[styles.modalBG, StyleSheet.absoluteFillObject]} />
         </TouchableWithoutFeedback>
@@ -296,4 +255,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default BucketInputModal;
+export default AddTransactionModal;

@@ -22,6 +22,7 @@ import DateTimePicker from '@react-native-community/datetimepicker';
 import xtype from 'xtypejs'
 
 
+
 const DatePickerModal = ({visible, closeDateModal, handleDatePicked}) => {
   const [date, setDate] = useState();
   const [selectedDate, setSelectedDate] = useState(new Date());
@@ -65,7 +66,7 @@ const DatePickerModal = ({visible, closeDateModal, handleDatePicked}) => {
           onChange={onChange}
           minimumDate={todayDate}
         />
-        <Button title='done' onPress={() => {closeDateModal(); handleDatePicked(date); console.log(date)}} />
+        <Button title='done' onPress={() => {closeDateModal(); handleDatePicked(date);}} />
         <Text>Target Date: {dateString} </Text>
         
         

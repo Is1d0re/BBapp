@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { ScrollView, StyleSheet, Text, View, Alert, Image, FlatList, SafeAreaView } from 'react-native';
 import { useHeaderHeight } from '@react-navigation/stack';
 import colors from '../misc/colors';
@@ -6,6 +6,7 @@ import RoundIconBtn from './RoundIconBtn';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useBuckets } from '../contexts/BucketProvider';
 import BucketInputModal from './BucketInputModal';
+import AddTransactionModal from './AddTransactionModal';
 
 const formatDate = ms => {
   const date = new Date(ms);
@@ -57,7 +58,9 @@ const BucketDetail = props => {
     );
   };
 
+
   const handleUpdate = async (title, goal, balance, targetDate, icon, transactions, time) => {
+    console.log('made it to update')
     const result = await AsyncStorage.getItem('buckets');
     let buckets = [];
     if (result !== null) buckets = JSON.parse(result);
@@ -75,11 +78,13 @@ const BucketDetail = props => {
 
         setBucket(n);
       }
-      return n;
+      return n; 
     });
 
     setBuckets(newBuckets);
+    
     await AsyncStorage.setItem('buckets', JSON.stringify(newBuckets));
+    
   };
   const handleOnClose = () => setShowModal(false);
 
@@ -87,6 +92,13 @@ const BucketDetail = props => {
     setIsEdit(true);
     setShowModal(true);
   };
+  const [TransactionmodalVisible, setTransactionModalVisible] = useState(false);
+  const openTransactionModal = () => {
+    setIsEdit(true);
+    setTransactionModalVisible(true);
+  };
+  const handleTransactionOnClose = () => setTransactionModalVisible(false);
+
   const targetDateObject = new Date(JSON.parse(bucket.targetDate));
   const goalNumber = Number(bucket.goal);
   const balanceNumber = Number(bucket.balance);
@@ -96,13 +108,11 @@ const BucketDetail = props => {
   const amountPermMonth = Math.round((goalNumber - balanceNumber)/(diffDates/msInMonth));
   const data = bucket.transactions
 
+  
 
   return (
     <>
-    
-    {console.log(data)}
     {console.log(bucket)}
-    
       <View
         style={[styles.container, { paddingTop: headerHeight, marginTop: 30 }]}
       >
@@ -124,16 +134,19 @@ const BucketDetail = props => {
 
       </View>
       <View >
-      {bucket.transactions ? ( 
+      {bucket.transactions[0] ? ( 
       <FlatList
               data={data}
               keyExtractor={item => item.transactionID.toString()}
               renderItem={({ item }) => (
                 <Text>{item.month} : {item.amount} </Text>
                 
-              )}
-            />) : <Text>Make a deposit!</Text>
+              )} 
+             />) : <Text>Make a deposit!</Text>
       }
+      </View>
+      <View>
+      <RoundIconBtn antIconName='wallet' onPress={openTransactionModal} />
       </View>
           
       <View style={styles.btnContainer}>
@@ -150,6 +163,14 @@ const BucketDetail = props => {
         onClose={handleOnClose}
         onSubmit={handleUpdate}
         visible={showModal}
+      />
+      <AddTransactionModal
+        isEdit={isEdit}
+        bucket={bucket}
+        onClose={handleTransactionOnClose}
+        onSubmit={handleUpdate}
+        visible={TransactionmodalVisible}
+        
       />
     </>
   );

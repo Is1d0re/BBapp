@@ -96,7 +96,7 @@ const BucketScreen = ({ user, navigation }) => {
       <SafeAreaView />
       <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
         <View style={styles.container}>
-        {console.log(buckets)}
+        {/* {console.log(buckets)} */}
 
           <Text style={styles.header}>{`Good ${greet} ${user.name}`}</Text>
           {buckets.length ? (

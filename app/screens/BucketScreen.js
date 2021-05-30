@@ -93,12 +93,13 @@ const BucketScreen = ({ user, navigation }) => {
 
   return (
     <>
-      <SafeAreaView />
+      <SafeAreaView style={styles.safeArea}>
+      <Text style={styles.header}>{`Good ${greet} ${user.name}`}</Text>
+      </SafeAreaView>
       <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
         <View style={styles.container}>
-        {/* {console.log(buckets)} */}
-
-          <Text style={styles.header}>{`Good ${greet} ${user.name}`}</Text>
+        <View style={styles.bucketsList}>
+          <Text style= {styles.pageTitle}>Your Savings Buckets</Text>
           {buckets.length ? (
             <SearchBar
               value={searchQuery}
@@ -107,7 +108,7 @@ const BucketScreen = ({ user, navigation }) => {
               onClear={handleOnClear}
             />
           ) : null}
-
+        
           {resultNotFound ? (
             <NotFound />
           ) : (
@@ -131,6 +132,8 @@ const BucketScreen = ({ user, navigation }) => {
             </View>
           ) : null}
         </View>
+        </View>
+        
       </TouchableWithoutFeedback>
       
       <RoundIconBtn
@@ -144,22 +147,33 @@ const BucketScreen = ({ user, navigation }) => {
         onSubmit={handleOnSubmit}
       />
       
-      <Button title='reset databases' color='red' onPress={() => AsyncStorage.clear()} />
-
     </>
   );
 };
 
 const styles = StyleSheet.create({
+  safeArea:{
+    backgroundColor: colors.PRIMARY,
+  },
   header: {
     fontSize: 25,
     fontWeight: 'bold',
+    backgroundColor: colors.PRIMARY,
+    paddingLeft: 15,
+    paddingBottom: 15,
+    marginTop:30,
+    color: colors.LIGHT,
+  },
+  pageTitle: {
+    paddingTop: 30,
+    fontSize: 22,
+    fontWeight: 'bold',
   },
   container: {
-    paddingHorizontal: 20,
-    paddingTop: 20,
+    paddingHorizontal: 4,
     flex: 1,
     zIndex: 1,
+    // backgroundColor: colors.BEIGE,
   },
   emptyHeader: {
     fontSize: 30,
@@ -179,7 +193,15 @@ const styles = StyleSheet.create({
     bottom: 50,
     zIndex: 1,
     borderRadius: 60,
-    backgroundColor: colors.PRIMARY
+    backgroundColor: colors.PRIMARY,
+  },
+  bucketsList:{
+    backgroundColor: colors.LIGHT,
+    padding: 1,
+    borderRadius: 8,
+  },
+  footer:{
+    marginTop: 20,
   },
 });
 

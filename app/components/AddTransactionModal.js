@@ -133,10 +133,8 @@ const addTransaction = () => {
 
   return (
     <>
-    {console.log(transactions)}
       <Modal visible={visible}>
         <SafeAreaView />
-
         <View style={styles.container}>
         <CloseIconBtn
                 style={styles.closeBtn}
@@ -201,7 +199,6 @@ const addTransaction = () => {
                 onPress={closeModal}
               />
           </View>
-          
         </View>
         <FlatList
               data={pendingTransactions}
@@ -211,6 +208,7 @@ const addTransaction = () => {
                 
               )}
             />
+        
         <TouchableWithoutFeedback onPress={handleModalClose}>
           <View style={[styles.modalBG, StyleSheet.absoluteFillObject]} />
         </TouchableWithoutFeedback>

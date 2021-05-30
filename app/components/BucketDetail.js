@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { ScrollView, StyleSheet, Text, View, Alert, Image, FlatList, SafeAreaView } from 'react-native';
+import { ScrollView, StyleSheet, Text, View, Alert, Image, FlatList, SafeAreaView, TouchableWithoutFeedback, Keyboard, } from 'react-native';
 import { useHeaderHeight } from '@react-navigation/stack';
 import colors from '../misc/colors';
 import RoundIconBtn from './RoundIconBtn';
@@ -7,6 +7,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useBuckets } from '../contexts/BucketProvider';
 import BucketInputModal from './BucketInputModal';
 import AddTransactionModal from './AddTransactionModal';
+import Transaction from './Transaction';
 
 const formatDate = ms => {
   const date = new Date(ms);
@@ -112,50 +113,77 @@ const BucketDetail = props => {
 
   return (
     <>
-    {console.log(bucket)}
-      <View
-        style={[styles.container, { paddingTop: headerHeight, marginTop: 30 }]}
+    <SafeAreaView style={styles.safeArea}>
+      
+        
+        </SafeAreaView>
+        <View
+        style={styles.bucketDetails}
       >
+        
+
         <Text style={styles.time}>
           {bucket.isUpdated
             ? `Updated At ${formatDate(bucket.time)}`
             : `Created At ${formatDate(bucket.time)}`}
         </Text>
+        <View style={styles.bucketTitle} >
         <Image style={styles.icon} source = {JSON.parse(bucket.icon)} /> 
         <Text style={styles.title}>{bucket.title}</Text>
-        <Text style={styles.goal}>Goal Amount: ${bucket.goal}</Text>
-        <Text style={styles.goal}>Current Bucket Balance: ${bucket.balance}</Text>
-        <Text style={styles.goal}>Target Date: {(targetDateObject).toDateString()}</Text>
-
-        
-        
-        <Text style={styles.goal}>Months until your date: {(diffDates/msInMonth).toFixed(2)}</Text>
-        <Text style={styles.goal}>You need to save ${amountPermMonth} per Month </Text>
-
+        </View>
+        <View style={styles.bucketInfo} >
+          <View style={styles.bucketInfoColumns}>
+            <Text style={styles.metric}>Goal</Text>
+            <Text style={styles.value}>${bucket.goal}</Text>
+          </View>
+          <View style={styles.bucketInfoColumns}>
+            <Text style={styles.metric}>Balance</Text>
+            <Text style={styles.value}>${bucket.balance}</Text>
+          </View>
+          <View style={styles.bucketInfoColumns}>
+            <Text style={styles.metric}>Target Date</Text>
+            <Text style={styles.value}>{(targetDateObject).toDateString()}</Text>
+          </View>
+        </View>
+        <View style={styles.bucketInfo}>
+        <View style={styles.bucketInfoColumns}>
+            <Text style={styles.metric}>Months until your date:</Text>
+            <Text style={styles.metric}>You need to save:</Text>
+        </View>
+        <View style={styles.bucketInfoColumns}>
+            <Text style={styles.value}>{(diffDates/msInMonth).toFixed(2)}</Text>
+            <Text style={styles.value}>${amountPermMonth} per Month </Text>
+        </View>
       </View>
-      <View >
+      </View>
+      <View style = {styles.transactions}>
+        <Text style= {styles.transactionsTitle}>Transaction History</Text>
       {bucket.transactions[0] ? ( 
       <FlatList
               data={data}
               keyExtractor={item => item.transactionID.toString()}
               renderItem={({ item }) => (
-                <Text>{item.month} : {item.amount} </Text>
+                <Transaction item={item}/>
                 
               )} 
-             />) : <Text>Make a deposit!</Text>
+             />) : <Text>You have not made any transactions</Text>
       }
-      </View>
-      <View>
-      <RoundIconBtn antIconName='wallet' onPress={openTransactionModal} />
       </View>
           
       <View style={styles.btnContainer}>
+      <RoundIconBtn antIconName='wallet' 
+          onPress={openTransactionModal} 
+          style={{marginBottom: 15 }}
+          />
+
         <RoundIconBtn
           antIconName='delete'
           style={{ backgroundColor: colors.ERROR, marginBottom: 15 }}
           onPress={displayDeleteAlert}
         />
         <RoundIconBtn antIconName='edit' onPress={openEditModal} />
+
+
       </View>
       <BucketInputModal
         isEdit={isEdit}
@@ -172,14 +200,39 @@ const BucketDetail = props => {
         visible={TransactionmodalVisible}
         
       />
+      
     </>
   );
 };
 
 const styles = StyleSheet.create({
-  container: {
+  safeArea:{
+    backgroundColor: colors.PRIMARY,
+    height: 100,
+  },
+  bucketDetails: {
     // flex: 1,
-    paddingHorizontal: 15,
+    padding: 15,
+    backgroundColor: colors.LIGHT,
+    paddingTop: 5,
+  },
+  bucketTitle: {
+    marginTop: 10,
+    flexDirection: 'row',
+    backgroundColor: colors.LIGHT,
+    alignItems: 'baseline',
+    
+  },
+  bucketInfo: {
+    marginTop: 20,
+    marginBottom: 20,
+    backgroundColor: colors.LIGHT,
+    // flexWrap: 'wrap',
+    flexDirection: 'row',
+  },
+  bucketInfoColumns: {
+    flexDirection: 'column',
+    marginRight: 40,
   },
   icon: {
     height:50,
@@ -190,15 +243,34 @@ const styles = StyleSheet.create({
     fontSize: 30,
     color: colors.PRIMARY,
     fontWeight: 'bold',
+    marginLeft: 50,
+    justifyContent: 'center',
   },
-  goal: {
-    fontSize: 20,
+  metric: {
+    fontSize: 16,
     opacity: 0.6,
+  },
+  value: {
+    fontSize: 16,
+    color: colors.DARK
   },
   time: {
     textAlign: 'right',
     fontSize: 12,
     opacity: 0.5,
+    paddingTop: 10,
+  },
+  transactions: {
+    borderRadius: 10,
+    backgroundColor: colors.LIGHT,
+    
+  },
+  transactionsTitle: {
+    fontSize: 22,
+    fontWeight: 'bold',
+    marginBottom: 10,
+    marginTop: 20,
+    paddingHorizontal: 15,
   },
   btnContainer: {
     position: 'absolute',

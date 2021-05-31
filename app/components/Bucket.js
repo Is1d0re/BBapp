@@ -10,11 +10,15 @@ import {
 } from 'react-native';
 import colors from '../misc/colors';
 import imageMap from '../misc/imageMap';
+import RoundIconBtn from '../components/RoundIconBtn';
 import xtype from 'xtypejs'
 
-const Bucket = ({ item, onPress }) => {
+const Bucket = ({ item, onPress, openEditModal }) => {
   const { title, goal, balance, targetDate, icon, transactions } = item;
   const targetDateObject = new Date(JSON.parse(targetDate));
+ 
+
+
   return (
     <TouchableOpacity onPress={onPress} style={styles.container}>
       <View style={styles.bucketLeft}>
@@ -30,7 +34,13 @@ const Bucket = ({ item, onPress }) => {
 
     <Text style= {styles.content} >Goal Date: {(targetDateObject).toDateString()}</Text>
       </View>
+
+    
+
     </TouchableOpacity>
+
+    
+
   );
 };
 

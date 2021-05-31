@@ -47,6 +47,7 @@ const styles = StyleSheet.create({
     shadowOffset: {width: 0, height: 1},
     shadowRadius: 1,
     shadowOpacity: 0.25,
+    justifyContent: 'space-between',
   },
   title: {
     fontWeight: 'bold',
@@ -58,26 +59,19 @@ contentMonth: {
   fontSize: 20,
 },
 contentPositiveAmount: {
-  justifyContent: 'flex-end',
   color: 'green',
   fontSize: 20,
 },
 contentNegativeAmount: {
   color: colors.ERROR,
   fontSize: 20,
-  alignContent: 'flex-end',
 
 },
 transactionLeft: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    flexWrap: 'wrap',
-    marginRight: 40,
+  paddingLeft: 20,
 },
 transactionRight: {
-  flexDirection: 'row',
-  alignItems: 'center',
-  flexWrap: 'wrap',
+  paddingRight: 200,
 },
 icon: {
     height:50,

@@ -30,9 +30,7 @@ const BucketInputModal = ({ visible, onClose, onSubmit, bucket, isEdit }) => {
   const [targetDate, setTargetDate] = useState();
   const [icon, setIcon] = useState();
   const [transactions, setTransactions] = useState([]);
-  const [month, setMonth] = useState('');
-  const [amount, setAmount] = useState('');
-  const [pendingTransactions, setPendingTransactions] = useState([]);
+
 
   const handleModalClose = () => {
     Keyboard.dismiss();
@@ -83,10 +81,10 @@ const BucketInputModal = ({ visible, onClose, onSubmit, bucket, isEdit }) => {
   };
 
   const handleSubmit = () => {
-    if (!title.trim() && !goal.trim() && !balance.trim() && !targetDate.trim() && !icon.trim() && !transactions.trim()) return onClose();
+    if (!title.trim() && !goal.trim() && !balance.trim() && !targetDate.trim() && !icon.trim()) return onClose();
     
     if (isEdit) {
-      onSubmit(title, goal, balance, targetDate, icon, transactions, Date.now());
+      onSubmit(title, goal, targetDate, icon, Date.now());
     } else {
       onSubmit(title, goal, balance, targetDate, icon, transactions);
       setTitle('');
@@ -94,7 +92,6 @@ const BucketInputModal = ({ visible, onClose, onSubmit, bucket, isEdit }) => {
       setBalance('');
       setTargetDate();
       setIcon();
-      setTransactions([]);
     }
     onClose();
   };
@@ -106,7 +103,6 @@ const BucketInputModal = ({ visible, onClose, onSubmit, bucket, isEdit }) => {
       setBalance('');
       setTargetDate();
       setIcon();
-      setTransactions([]);
     }
     onClose();
   };
@@ -151,7 +147,7 @@ const BucketInputModal = ({ visible, onClose, onSubmit, bucket, isEdit }) => {
             keyboardType = 'numeric'
           />
 
-          {!transactions[0] ? (
+          {!(isEdit)? (
           <TextInput
             value={balance}
             placeholder='Current Balance'

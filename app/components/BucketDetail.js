@@ -1,6 +1,5 @@
-import React, { useEffect, useState } from 'react';
-import { ScrollView, StyleSheet, Text, View, Alert, Image, FlatList, SafeAreaView, TouchableWithoutFeedback, Keyboard, } from 'react-native';
-import { useHeaderHeight } from '@react-navigation/stack';
+import React, { useEffect, useState, useRef } from 'react';
+import { ScrollView, StyleSheet, Text, View, Alert, Image, FlatList, SafeAreaView, TouchableWithoutFeedback, Keyboard, Button, } from 'react-native';
 import colors from '../misc/colors';
 import RoundIconBtn from './RoundIconBtn';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -8,6 +7,8 @@ import { useBuckets } from '../contexts/BucketProvider';
 import BucketInputModal from './BucketInputModal';
 import AddTransactionModal from './AddTransactionModal';
 import Transaction from './Transaction';
+
+
 
 const formatDate = ms => {
   const date = new Date(ms);
@@ -23,11 +24,15 @@ const formatDate = ms => {
 
 const BucketDetail = props => {
   const [bucket, setBucket] = useState(props.route.params.bucket);
-  const headerHeight = useHeaderHeight();
   const { setBuckets } = useBuckets();
   const [showModal, setShowModal] = useState(false);
   const [isEdit, setIsEdit] = useState(false);
-
+  const [title, setTitle] = useState(props.route.params.bucket.title);
+  const [goal, setGoal] = useState(props.route.params.bucket.goal);
+  const [balance, setBalance] = useState(props.route.params.bucket.balance);
+  const [targetDate, setTargetDate] = useState(props.route.params.bucket.targetDate);
+  const [icon, setIcon] = useState(props.route.params.bucket.icon);
+  const [transactions, setTransactions] = useState(props.route.params.bucket.transactions);
   const deleteBucket = async () => {
     const result = await AsyncStorage.getItem('buckets');
     let buckets = [];
@@ -59,9 +64,10 @@ const BucketDetail = props => {
     );
   };
 
-
-  const handleUpdate = async (title, goal, balance, targetDate, icon, transactions, time) => {
+  const handleTransactionsUpdate = async (balance, transactions, time) => {
     console.log('made it to update')
+    setTransactions(transactions);
+    setBalance(balance);
     const result = await AsyncStorage.getItem('buckets');
     let buckets = [];
     if (result !== null) buckets = JSON.parse(result);
@@ -83,11 +89,45 @@ const BucketDetail = props => {
     });
 
     setBuckets(newBuckets);
-    
     await AsyncStorage.setItem('buckets', JSON.stringify(newBuckets));
     
   };
-  const handleOnClose = () => setShowModal(false);
+
+  const handleUpdate = async (title, goal, targetDate, icon, time) => {
+    setTitle(title);
+    setGoal(goal);
+    setBalance(balance);
+    setTargetDate(targetDate);
+    setIcon(icon);
+    const result = await AsyncStorage.getItem('buckets');
+    let buckets = [];
+    if (result !== null) buckets = JSON.parse(result);
+
+    const newBuckets = buckets.filter(n => {
+      if (n.id === bucket.id) {
+        n.title = title;
+        n.goal = goal;
+        n.balance = balance;
+        n.targetDate = targetDate;
+        n.icon = icon;
+        n.isUpdated = true;
+        n.time = time;
+        n.transactions = transactions;
+
+        setBucket(n);
+      }
+      return n; 
+    });
+
+    setBuckets(newBuckets);
+    await AsyncStorage.setItem('buckets', JSON.stringify(newBuckets));
+    
+  };
+
+
+
+
+  const handleOnClose = () => {setShowModal(false)}
 
   const openEditModal = () => {
     setIsEdit(true);
@@ -156,18 +196,27 @@ const BucketDetail = props => {
         </View>
       </View>
       </View>
-      <View style = {styles.transactions}>
+      <View style = {styles.transactionsSection}>
         <Text style= {styles.transactionsTitle}>Transaction History</Text>
-      {bucket.transactions[0] ? ( 
-      <FlatList
-              data={data}
-              keyExtractor={item => item.transactionID.toString()}
-              renderItem={({ item }) => (
-                <Transaction item={item}/>
-                
-              )} 
-             />) : <Text>You have not made any transactions</Text>
-      }
+        <View style={styles.scrollButton}>
+        
+        </View>
+        <View style= {styles.transactionsList}>
+          {transactions[0] ? ( 
+      
+            <FlatList
+                  ref={(ref) => {flatlistRef = ref;}}
+                  data={data.reverse()}
+                  keyExtractor={item => item.transactionID.toString()}
+                  // inverted={true}
+                  // initialScrollIndex={0}
+                  renderItem={({ item }) => (
+                    <Transaction item={item}/>
+                  )} 
+                />
+                ) : <Text style={styles.noTransactions}>Press the wallet button to add your first transaction!</Text>
+          }
+        </View>
       </View>
           
       <View style={styles.btnContainer}>
@@ -175,13 +224,15 @@ const BucketDetail = props => {
           onPress={openTransactionModal} 
           style={{marginBottom: 15 }}
           />
-
+        <RoundIconBtn antIconName='edit' 
+        onPress={openEditModal} 
+        style={{marginBottom: 15 }}
+        />
         <RoundIconBtn
           antIconName='delete'
           style={{ backgroundColor: colors.ERROR, marginBottom: 15 }}
           onPress={displayDeleteAlert}
         />
-        <RoundIconBtn antIconName='edit' onPress={openEditModal} />
 
 
       </View>
@@ -196,8 +247,9 @@ const BucketDetail = props => {
         isEdit={isEdit}
         bucket={bucket}
         onClose={handleTransactionOnClose}
-        onSubmit={handleUpdate}
+        onSubmit={handleTransactionsUpdate}
         visible={TransactionmodalVisible}
+        bucketTitle={title}
         
       />
       
@@ -206,6 +258,7 @@ const BucketDetail = props => {
 };
 
 const styles = StyleSheet.create({
+
   safeArea:{
     backgroundColor: colors.PRIMARY,
     height: 100,
@@ -221,6 +274,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     backgroundColor: colors.LIGHT,
     alignItems: 'baseline',
+    justifyContent: 'flex-start',
     
   },
   bucketInfo: {
@@ -229,10 +283,11 @@ const styles = StyleSheet.create({
     backgroundColor: colors.LIGHT,
     // flexWrap: 'wrap',
     flexDirection: 'row',
+    justifyContent: 'space-between',
   },
   bucketInfoColumns: {
     flexDirection: 'column',
-    marginRight: 40,
+    // marginRight: 40,
   },
   icon: {
     height:50,
@@ -260,10 +315,14 @@ const styles = StyleSheet.create({
     opacity: 0.5,
     paddingTop: 10,
   },
-  transactions: {
+  scrollButton: {
+    alignItems: 'flex-end',
+    paddingRight: 20,
+  },
+  transactionsSection: {
     borderRadius: 10,
     backgroundColor: colors.LIGHT,
-    
+    flex: 2,
   },
   transactionsTitle: {
     fontSize: 22,
@@ -271,6 +330,14 @@ const styles = StyleSheet.create({
     marginBottom: 10,
     marginTop: 20,
     paddingHorizontal: 15,
+  },
+  transactionsList: {
+    flex: 1,
+    flexDirection: 'column-reverse',
+  },
+  noTransactions: {
+    fontSize: 14,
+    paddingLeft: 20,
   },
   btnContainer: {
     position: 'absolute',

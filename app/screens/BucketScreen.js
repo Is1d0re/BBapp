@@ -116,7 +116,7 @@ const BucketScreen = ({ user, navigation }) => {
               data={reverseBuckets}
               keyExtractor={item => item.id.toString()}
               renderItem={({ item }) => (
-                <Bucket onPress={() => openBucket(item)} item={item} />
+                <Bucket onPress={() => openBucket(item)} item={item} openEditModal={() => setModalVisible(true)}/>
               )}
             />
           )}
@@ -146,6 +146,7 @@ const BucketScreen = ({ user, navigation }) => {
         onClose={() => setModalVisible(false)}
         onSubmit={handleOnSubmit}
       />
+
       
     </>
   );
@@ -168,12 +169,13 @@ const styles = StyleSheet.create({
     paddingTop: 30,
     fontSize: 22,
     fontWeight: 'bold',
+    paddingLeft: 15,
   },
   container: {
     paddingHorizontal: 4,
     flex: 1,
     zIndex: 1,
-    // backgroundColor: colors.BEIGE,
+    backgroundColor: colors.LIGHT,
   },
   emptyHeader: {
     fontSize: 30,
@@ -198,7 +200,8 @@ const styles = StyleSheet.create({
   bucketsList:{
     backgroundColor: colors.LIGHT,
     padding: 1,
-    borderRadius: 8,
+    // borderRadius: 8,
+    flex: 2,
   },
   footer:{
     marginTop: 20,

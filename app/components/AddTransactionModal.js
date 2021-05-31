@@ -23,7 +23,7 @@ import IconPickerModal from './IconPickerModal';
 import DatePickerModal from './DatePickerModal';
 import {Picker} from '@react-native-picker/picker';
 
-const AddTransactionModal = ({ visible, onClose, onSubmit, bucket, isEdit  }) => {
+const AddTransactionModal = ({ visible, onClose, onSubmit, bucket, isEdit, bucketTitle  }) => {
   const [title, setTitle] = useState('');
   const [goal, setGoal] = useState('');
   const [balance, setBalance] = useState('');
@@ -68,9 +68,9 @@ const AddTransactionModal = ({ visible, onClose, onSubmit, bucket, isEdit  }) =>
         return
     }
     if (isEdit) {
-      onSubmit(title, goal, balance, targetDate, icon, transactions, Date.now());
+      onSubmit(balance, transactions, Date.now());
     } else {
-    onSubmit(title, goal, balance, targetDate, icon, transactions);
+    onSubmit(balance, transactions);
     setTitle('');
     setGoal('');
     setBalance('');
@@ -116,14 +116,14 @@ const addTransaction = () => {
     } 
   const transactionID = Date.now();
   const transaction = {transactionID, month, amount};
-  const updatedTransactions = [...transactions, transaction];
+  const updatedTransactions = [transaction, ...transactions];
   // transactions.unshift(JSON.stringify(transaction));
   setTransactions(updatedTransactions);
   const balanceNumber = Number(balance)
   const newBalance = balanceNumber + Number(amount) 
   setBalance(JSON.stringify(newBalance));
   // console.log(updatedTransactions);
-  setPendingTransactions([...pendingTransactions, transaction]);
+  setPendingTransactions([transaction, ...pendingTransactions]);
   setAmount('');
   setMonth('');
  
@@ -142,7 +142,7 @@ const addTransaction = () => {
                 onPress={closeModal}
                 
               />
-          <Text style={styles.modalTitle}>Manage Balance for {title} Bucket!</Text>
+          <Text style={styles.modalTitle}>Manage Balance for {bucketTitle} Bucket!</Text>
           
           <Picker
             selectedValue={month}

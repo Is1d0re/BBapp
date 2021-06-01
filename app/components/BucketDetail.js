@@ -111,7 +111,7 @@ const BucketDetail = props => {
         n.icon = icon;
         n.isUpdated = true;
         n.time = time;
-        n.transactions = JSON.parse(transactions);
+        n.transactions = transactions;
 
         setBucket(n);
       }
@@ -204,7 +204,6 @@ const BucketDetail = props => {
           {transactions[0] ? ( 
       
             <FlatList
-                  ref={(ref) => {flatlistRef = ref;}}
                   data={data.reverse()}
                   keyExtractor={item => item.transactionID.toString()}
                   // inverted={true}

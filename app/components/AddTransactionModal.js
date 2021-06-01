@@ -71,6 +71,7 @@ const AddTransactionModal = ({ visible, onClose, onSubmit, bucket, isEdit, bucke
       setAmount('');
       setPendingTransactions([]);
       setSelectedDate(JSON.stringify(new Date()))
+      setMultiplier('1')
     }
   }, [isEdit]);
 
@@ -105,6 +106,7 @@ const AddTransactionModal = ({ visible, onClose, onSubmit, bucket, isEdit, bucke
       setPendingTransactions([transaction, ...pendingTransactions]);
       setAmount('');
       setSelectedDate(JSON.stringify(new Date()));  
+      setMultiplier('1')
       onSubmit(newBalance, updatedTransactions, Date.now());
       onClose();
     } else {
@@ -118,7 +120,8 @@ const AddTransactionModal = ({ visible, onClose, onSubmit, bucket, isEdit, bucke
       setBalance(JSON.stringify(newBalance));
       setPendingTransactions([transaction, ...pendingTransactions]);
       setAmount('');
-      setSelectedDate(new Date()); 
+      setSelectedDate(JSON.stringify(new Date())); 
+      setMultiplier('1')
       onSubmit(newBalance, updatedTransactions, Date.now()); 
       onClose();
     };

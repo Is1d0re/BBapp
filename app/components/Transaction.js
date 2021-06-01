@@ -14,15 +14,17 @@ import { AntDesign } from '@expo/vector-icons';
 
 
 const Transaction = ({ item, onPress }) => {
-  const { selectedDate, amount, newBalance} = item;
+  const { selectedDate, amount, newBalance, multiplier} = item;
+  const selectedDateObject = new Date(JSON.parse(selectedDate))
+  // const multiplier = item.mul
   return (
     <View style={styles.container} >
       <View style={styles.transactionLeft}>
-        <Text style= {styles.contentMonth}>{selectedDate.toDateString()}</Text>
+        <Text style= {styles.contentMonth}>{(selectedDateObject).toDateString()}</Text>
       </View>
       <View style={styles.transactionCenter}>
-        <View style={[styles.transactionAmount, amount[0] === '-' ? styles.transactionNegativeAmount: styles.transactionPositiveAmount]}>
-        {amount[0] === '-' ? (
+        <View style={[styles.transactionAmount, multiplier === '-1' ? styles.transactionNegativeAmount: styles.transactionPositiveAmount]}>
+        {multiplier === '-1' ? (
         <Text style= {styles.contentNegativeAmount}>${amount} </Text>
          ): <Text style= {styles.contentPositiveAmount}>${amount} </Text>
         }
@@ -53,7 +55,7 @@ const styles = StyleSheet.create({
     shadowOffset: {width: 0, height: 1},
     shadowRadius: 1,
     shadowOpacity: 0.25,
-    justifyContent: 'space-between',
+    justifyContent: 'flex-start',
   },
   title: {
     fontWeight: 'bold',
@@ -62,7 +64,7 @@ const styles = StyleSheet.create({
   },
 contentMonth: {
   color: colors.DARK,
-  fontSize: 20,
+  fontSize: 16,
 },
 contentPositiveAmount: {
   color: 'green',
@@ -81,7 +83,7 @@ transactionCenter: {
   // paddingRight: 150,
 },
 transactionRight: {
-  paddingRight: 10,
+  paddingLeft: 50,
 },
 transactionAmount: {
   width: 90,

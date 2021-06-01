@@ -45,15 +45,13 @@ const AddTransactionModal = ({ visible, onClose, onSubmit, bucket, isEdit, bucke
   ];
 
   const [date, setDate] = useState(new Date());
-  const [selectedDate, setSelectedDate] = useState(new Date());
-  const dateString = (selectedDate.toDateString());
+  const [selectedDate, setSelectedDate] = useState(JSON.stringify(new Date()));
   const [show, setShow] = useState(false);
-
  
   const onChange = (event, selectedDate) => {
     const currentDate = selectedDate || date;
     setShow(Platform.OS === 'ios');
-    setSelectedDate(currentDate)
+    setSelectedDate(JSON.stringify(currentDate))
   
   };
 
@@ -72,7 +70,7 @@ const AddTransactionModal = ({ visible, onClose, onSubmit, bucket, isEdit, bucke
       setMonth('');
       setAmount('');
       setPendingTransactions([]);
-      setSelectedDate(new Date())
+      setSelectedDate(JSON.stringify(new Date()))
     }
   }, [isEdit]);
 
@@ -85,26 +83,46 @@ const AddTransactionModal = ({ visible, onClose, onSubmit, bucket, isEdit, bucke
 
  
   const handleSubmit = () => {
-    if (!title.trim() && !goal.trim() && !balance.trim() && !targetDate.trim() && !icon.trim() && !transactions.trim()) return onClose();
-    if (!pendingTransactions[0]){
-        alert('no pending transactions to commit')
-        return
-    }
-    if (isEdit) {
-      onSubmit(balance, transactions, Date.now());
+    // if (!pendingTransactions[0]){
+    //     alert('no pending transactions to commit')
+    //     return
+    // }
+    if (amount ===''){
+      alert('please enter an amount')
+      return;
+      } 
+    if (multiplier === '-1'){
+      const negativeAmount = Number(amount) * -1
+      setAmount(negativeAmount.toString())
+      const transactionID = Date.now();
+      const balanceNumber = Number(balance)
+      const newBalance = balanceNumber + Number(negativeAmount) 
+      const transaction = {transactionID, selectedDate, amount, newBalance, multiplier};
+      const updatedTransactions = [transaction, ...transactions];
+      // transactions.unshift(JSON.stringify(transaction));
+      setTransactions(updatedTransactions);  
+      setBalance(JSON.stringify(newBalance));
+      setPendingTransactions([transaction, ...pendingTransactions]);
+      setAmount('');
+      setSelectedDate(new Date());  
+      onSubmit(newBalance, updatedTransactions, Date.now());
+      onClose();
     } else {
-    onSubmit(balance, transactions);
-    setTitle('');
-    setGoal('');
-    setBalance('');
-    setTargetDate();
-    setIcon();
-    setTransactions([]);
-    setMonth('');
-    setAmount('');
-    setPendingTransactions([]);
-    }    
-    onClose();
+      const transactionID = Date.now();
+      const balanceNumber = Number(balance)
+      const newBalance = balanceNumber + Number(amount) 
+      const transaction = {transactionID, selectedDate, amount, newBalance, multiplier};
+      const updatedTransactions = [transaction, ...transactions];
+      // transactions.unshift(JSON.stringify(transaction));
+      setTransactions(updatedTransactions);
+      setBalance(JSON.stringify(newBalance));
+      setPendingTransactions([transaction, ...pendingTransactions]);
+      setAmount('');
+      setSelectedDate(new Date()); 
+      onSubmit(newBalance, updatedTransactions, Date.now()); 
+      onClose();
+    };
+
   };
 
   const closeModal = () => {
@@ -122,9 +140,6 @@ const AddTransactionModal = ({ visible, onClose, onSubmit, bucket, isEdit, bucke
     onClose();
   };
 
-//   const [IconmodalVisible, setIconModalVisible] = useState(false);
-//   const handleOpenPicker = () => setIconModalVisible(true);
-//   const handleIconPicked = (pickedicon) => setIcon(pickedicon)
 
 const [multiplier, setMultiplier] = useState('1')
 
@@ -133,6 +148,18 @@ const addTransaction = () => {
     alert('please enter an amount')
     return;
     } 
+  if (multiplier === '-1'){
+    const negativeAmount = Number(amount) * -1
+    setAmount(negativeAmount.toString())
+    const transactionID = Date.now();
+    const balanceNumber = Number(balance)
+    const newBalance = balanceNumber + Number(negativeAmount) 
+    const transaction = {transactionID, selectedDate, amount, newBalance};
+    const updatedTransactions = [transaction, ...transactions];
+    // transactions.unshift(JSON.stringify(transaction));
+    setTransactions(updatedTransactions);    
+  }
+ 
   const transactionID = Date.now();
   const balanceNumber = Number(balance)
   const newBalance = balanceNumber + Number(amount) 
@@ -140,13 +167,6 @@ const addTransaction = () => {
   const updatedTransactions = [transaction, ...transactions];
   // transactions.unshift(JSON.stringify(transaction));
   setTransactions(updatedTransactions);
- 
-  setBalance(JSON.stringify(newBalance));
-  setPendingTransactions([transaction, ...pendingTransactions]);
-  setAmount('');
-  setSelectedDate(new Date());
- 
-  
   
 };
 
@@ -163,10 +183,11 @@ const addTransaction = () => {
                         onPress={closeModal}
                         color = {colors.LIGHT}
                       />
+                      <View style={styles.titleArea}>
+                           <Text style={styles.modalTitle}>Add transaction for {bucketTitle}</Text>
+                      </View>
               </View>
-              <View style={styles.titleArea}>
-                  <Text style={styles.modalTitle}>Add transaction for {bucketTitle}</Text>
-              </View>
+              
               
             </View>
             <View style={styles.switchArea}>
@@ -178,7 +199,7 @@ const addTransaction = () => {
                 <Text style={styles.label}>Date:</Text>
                     <DateTimePicker
                         testID="dateTimePicker"
-                        value={selectedDate}
+                        value={new Date()}
                         mode='date'
                         is24Hour={true}
                         display="calendar"
@@ -199,43 +220,24 @@ const addTransaction = () => {
                     />
                 </View>
               </View>
-          <TextInput
-            value={month}
-            placeholder='What month?'
-            style={[styles.input, styles.goal]}
-            onChangeText={text => handleOnChangeText(text, 'month')}
-            
-          />
-
-          
-          
-
-
-          
-          <Button title='add transaction' onPress={addTransaction} />
-          </View>
+            </View>
           <View style={styles.btnContainer}>
             <RoundIconBtn
               size={30} 
               antIconName='check'
               onPress={() => {handleSubmit(); setPendingTransactions([])}}
+              style={styles.btn}
+              submit = {'submit'}
             />
-              <RoundIconBtn
+              {/* <RoundIconBtn
                 size={30}
                 style={{ marginLeft: 15 }}
                 antIconName='close'
                 onPress={closeModal}
-              />
+              /> */}
           </View>
         </View>
-        <FlatList
-              data={pendingTransactions}
-              keyExtractor={item => item.transactionID.toString()}
-              renderItem={({ item }) => (
-                <Text>{item.selectedDate.toDateString()} : {item.amount} </Text>
-                
-              )}
-            />
+    
         <TouchableWithoutFeedback onPress={handleModalClose}>
           <View style={[styles.modalBG, StyleSheet.absoluteFillObject]} />
         </TouchableWithoutFeedback>
@@ -261,7 +263,6 @@ const styles = StyleSheet.create({
   },
   headerArea:{
     backgroundColor: colors.PRIMARY,
-    height: 90,
     borderTopStartRadius: 5,
     borderTopEndRadius: 5,
     flexDirection: 'column',
@@ -269,7 +270,8 @@ const styles = StyleSheet.create({
   },
   closeBtnArea:{
     flexDirection: 'row',
-    justifyContent: 'flex-end',
+    justifyContent: 'flex-start',
+    paddingLeft: 10,
     // backgroundColor: 'black',
     // position: 'absolute',
     // right: 10,
@@ -279,15 +281,16 @@ closeBtn: {
   
 },
 
-  icon: {
-    height:50,
-    width: 50,
+  btn: {
+    borderRadius: 5,
+    width: '70%',
+    
 },
 titleArea:{
   flexDirection: 'row',
   justifyContent: 'center',
-  marginTop: 10,
   flexWrap: 'wrap',
+  marginLeft: 10,
 },
 
   modalTitle:{
@@ -301,7 +304,8 @@ titleArea:{
     
   },
   switchArea: {
-    padding: 10,
+    padding: 15,
+    paddingTop: 25,
     backgroundColor: colors.PRIMARY,
   },
   inputArea: {
@@ -354,8 +358,8 @@ titleArea:{
 
   btnContainer: {
     flexDirection: 'row',
-    justifyContent: 'center',
-    paddingVertical: 15,
+    justifyContent: 'space-evenly',
+    paddingVertical: 30,
   },
 });
 

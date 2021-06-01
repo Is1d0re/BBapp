@@ -65,7 +65,6 @@ const BucketDetail = props => {
   };
 
   const handleTransactionsUpdate = async (balance, transactions, time) => {
-    console.log('made it to update')
     setTransactions(transactions);
     setBalance(balance);
     const result = await AsyncStorage.getItem('buckets');

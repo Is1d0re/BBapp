@@ -1,16 +1,18 @@
 import React from 'react';
-import { View, StyleSheet, TouchableOpacity } from 'react-native';
+import { View, StyleSheet, TouchableOpacity, Text } from 'react-native';
 import { AntDesign } from '@expo/vector-icons';
 import colors from '../misc/colors';
 
-const RoundIconBtn = ({ antIconName, size, color, style, onPress }) => {
+const RoundIconBtn = ({ antIconName, size, color, style, onPress, submit }) => {
   return (
     <TouchableOpacity style={[styles.icon, { ...style }]}  onPress={onPress}>
-    <AntDesign
+    {submit !== 'submit' ? (<AntDesign
       name={antIconName}
       size={size || 24}
       color={color || colors.LIGHT}
-    />
+    />) : <Text style={styles.text}>Submit</Text>
+
+}
     </TouchableOpacity>
   );
 };
@@ -30,6 +32,10 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
+  text: {
+    color: colors.LIGHT,
+    fontSize: 20,
+  }
 });
 
 export default RoundIconBtn;

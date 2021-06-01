@@ -104,7 +104,7 @@ const AddTransactionModal = ({ visible, onClose, onSubmit, bucket, isEdit, bucke
       setBalance(JSON.stringify(newBalance));
       setPendingTransactions([transaction, ...pendingTransactions]);
       setAmount('');
-      setSelectedDate(new Date());  
+      setSelectedDate(JSON.stringify(new Date()));  
       onSubmit(newBalance, updatedTransactions, Date.now());
       onClose();
     } else {
@@ -143,32 +143,32 @@ const AddTransactionModal = ({ visible, onClose, onSubmit, bucket, isEdit, bucke
 
 const [multiplier, setMultiplier] = useState('1')
 
-const addTransaction = () => {
-  if (amount ===''){
-    alert('please enter an amount')
-    return;
-    } 
-  if (multiplier === '-1'){
-    const negativeAmount = Number(amount) * -1
-    setAmount(negativeAmount.toString())
-    const transactionID = Date.now();
-    const balanceNumber = Number(balance)
-    const newBalance = balanceNumber + Number(negativeAmount) 
-    const transaction = {transactionID, selectedDate, amount, newBalance};
-    const updatedTransactions = [transaction, ...transactions];
-    // transactions.unshift(JSON.stringify(transaction));
-    setTransactions(updatedTransactions);    
-  }
+// const addTransaction = () => {
+//   if (amount ===''){
+//     alert('please enter an amount')
+//     return;
+//     } 
+//   if (multiplier === '-1'){
+//     const negativeAmount = Number(amount) * -1
+//     setAmount(negativeAmount.toString())
+//     const transactionID = Date.now();
+//     const balanceNumber = Number(balance)
+//     const newBalance = balanceNumber + Number(negativeAmount) 
+//     const transaction = {transactionID, selectedDate, amount, newBalance};
+//     const updatedTransactions = [transaction, ...transactions];
+//     // transactions.unshift(JSON.stringify(transaction));
+//     setTransactions(updatedTransactions);    
+//   }
  
-  const transactionID = Date.now();
-  const balanceNumber = Number(balance)
-  const newBalance = balanceNumber + Number(amount) 
-  const transaction = {transactionID, selectedDate, amount, newBalance};
-  const updatedTransactions = [transaction, ...transactions];
-  // transactions.unshift(JSON.stringify(transaction));
-  setTransactions(updatedTransactions);
+//   const transactionID = Date.now();
+//   const balanceNumber = Number(balance)
+//   const newBalance = balanceNumber + Number(amount) 
+//   const transaction = {transactionID, selectedDate, amount, newBalance};
+//   const updatedTransactions = [transaction, ...transactions];
+//   // transactions.unshift(JSON.stringify(transaction));
+//   setTransactions(updatedTransactions);
   
-};
+// };
 
   return (
       <Modal visible={visible} transparent>

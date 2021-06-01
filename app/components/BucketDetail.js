@@ -111,7 +111,7 @@ const BucketDetail = props => {
         n.icon = icon;
         n.isUpdated = true;
         n.time = time;
-        n.transactions = transactions;
+        n.transactions = JSON.parse(transactions);
 
         setBucket(n);
       }

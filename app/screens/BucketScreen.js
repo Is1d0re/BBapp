@@ -10,6 +10,7 @@ import {
   FlatList,
   SafeAreaView,
   Button,
+  Image,
 } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import Bucket from '../components/Bucket';
@@ -94,6 +95,7 @@ const BucketScreen = ({ user, navigation }) => {
   return (
     <>
       <SafeAreaView style={styles.safeArea}>
+      <Image style={styles.icon} source = {require('../../assets/BBicon.png')} />
       <Text style={styles.header}>{`Good ${greet} ${user.name}`}</Text>
       </SafeAreaView>
       <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
@@ -155,15 +157,25 @@ const BucketScreen = ({ user, navigation }) => {
 const styles = StyleSheet.create({
   safeArea:{
     backgroundColor: colors.PRIMARY,
+    flexDirection: 'row',
+    justifyContent: 'flex-start',
+    alignItems: 'baseline',
+  },
+  icon: {
+    height: 50,
+    width: 50,
+    marginLeft: 20, 
+    marginRight: 20,
+    borderRadius: 100,
   },
   header: {
-    fontSize: 25,
+    fontSize: 18,
     fontWeight: 'bold',
-    backgroundColor: colors.PRIMARY,
     paddingLeft: 15,
-    paddingBottom: 15,
-    marginTop:30,
+    paddingBottom: 18,
+    marginTop:10,
     color: colors.LIGHT,
+    
   },
   pageTitle: {
     paddingTop: 30,

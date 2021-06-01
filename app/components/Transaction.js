@@ -14,17 +14,23 @@ import { AntDesign } from '@expo/vector-icons';
 
 
 const Transaction = ({ item, onPress }) => {
-  const { month, amount} = item;
+  const { selectedDate, amount, newBalance} = item;
   return (
     <View style={styles.container} >
       <View style={styles.transactionLeft}>
-        <Text style= {styles.contentMonth}>{month}</Text>
+        <Text style= {styles.contentMonth}>{selectedDate.toDateString()}</Text>
+      </View>
+      <View style={styles.transactionCenter}>
+        <View style={[styles.transactionAmount, amount[0] === '-' ? styles.transactionNegativeAmount: styles.transactionPositiveAmount]}>
+        {amount[0] === '-' ? (
+        <Text style= {styles.contentNegativeAmount}>${amount} </Text>
+         ): <Text style= {styles.contentPositiveAmount}>${amount} </Text>
+        }
+        </View>
+        
       </View>
       <View style={styles.transactionRight}>
-        {amount[0] === '-' ? (
-        <Text style= {styles.contentNegativeAmount}>{amount} </Text>
-         ): <Text style= {styles.contentPositiveAmount}>{amount} </Text>
-        }
+        <Text style={styles.newBalance}>${newBalance}</Text>
       </View>
       </View>
   );
@@ -69,9 +75,30 @@ contentNegativeAmount: {
 },
 transactionLeft: {
   paddingLeft: 20,
+  marginRight: 30,
+},
+transactionCenter: {
+  // paddingRight: 150,
 },
 transactionRight: {
-  paddingRight: 200,
+  paddingRight: 10,
+},
+transactionAmount: {
+  width: 90,
+  flexDirection: 'row',
+  justifyContent: 'center',
+  borderRadius: 80,
+  padding: 10,
+},
+transactionPositiveAmount: {
+  backgroundColor: '#90f5ab',
+},
+transactionNegativeAmount: {
+  backgroundColor: '#f7abab',
+},
+newBalance: {
+  fontSize: 16,
+  opacity: 0.6,
 },
 icon: {
     height:50,

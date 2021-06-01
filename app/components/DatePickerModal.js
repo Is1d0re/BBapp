@@ -26,6 +26,7 @@ import xtype from 'xtypejs'
 const DatePickerModal = ({visible, closeDateModal, handleDatePicked}) => {
   const [date, setDate] = useState();
   const [selectedDate, setSelectedDate] = useState(new Date());
+  
  
   const onChange = (event, selectedDate) => {
     const currentDate = selectedDate || date;
@@ -62,7 +63,7 @@ const DatePickerModal = ({visible, closeDateModal, handleDatePicked}) => {
           value={selectedDate}
           mode='date'
           is24Hour={true}
-          display="spinner"
+          display="calendar"
           onChange={onChange}
           minimumDate={todayDate}
         />

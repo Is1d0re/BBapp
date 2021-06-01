@@ -41,7 +41,7 @@ export default function App() {
     <NavigationContainer>
       <BucketProvider>
         <Stack.Navigator
-          screenOptions={{ headerTitle: '', headerTransparent: true, headerBackTitleStyle: {color: colors.PINK}, headerTintColor: colors.PINK}}
+          screenOptions={{ headerTitle: '', headerTransparent: true, headerBackTitleStyle: {color: colors.LIGHT}, headerTintColor: colors.LIGHT}}
         >
           <Stack.Screen component={renderBucketScreen} name='BucketScreen' />
           <Stack.Screen component={BucketDetail} name='BucketDetail' />

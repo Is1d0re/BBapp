@@ -22,12 +22,14 @@ import imageMap from '../misc/imageMap';
 import { AntDesign } from '@expo/vector-icons';
 import IconPickerModal from './IconPickerModal';
 import DatePickerModal from './DatePickerModal';
+import DateTimePicker from '@react-native-community/datetimepicker';
+
 
 const BucketInputModal = ({ visible, onClose, onSubmit, bucket, isEdit }) => {
   const [title, setTitle] = useState('');
   const [goal, setGoal] = useState('');
   const [balance, setBalance] = useState('');
-  const [targetDate, setTargetDate] = useState();
+  const [targetDate, setTargetDate] = useState(JSON.stringify(new Date()));
   const [icon, setIcon] = useState();
   const [transactions, setTransactions] = useState([]);
 
@@ -90,7 +92,7 @@ const BucketInputModal = ({ visible, onClose, onSubmit, bucket, isEdit }) => {
       setTitle('');
       setGoal('');
       setBalance('');
-      setTargetDate();
+      setTargetDate(JSON.stringify(new Date()));
       setIcon();
     }
     onClose();
@@ -119,9 +121,9 @@ const BucketInputModal = ({ visible, onClose, onSubmit, bucket, isEdit }) => {
 
   return (
     <>
-      <Modal visible={visible}>
+      <Modal visible={visible} transparent>
+      <View style={styles.wrapper}>
         <SafeAreaView />
-        
         <View style={styles.container}>
         <CloseIconBtn
                 style={styles.closeBtn}
@@ -131,7 +133,7 @@ const BucketInputModal = ({ visible, onClose, onSubmit, bucket, isEdit }) => {
               />
         {(isEdit) ? (
           <Text style={styles.modalTitle}>Bucket Editor!</Text>
-          ) : <Text style={styles.modalTitle}>Add a Bucket!</Text>
+          ) : <Text style={styles.modalTitle}>Create a Bucket!</Text>
         } 
           <TextInput
             value={title}
@@ -202,6 +204,7 @@ const BucketInputModal = ({ visible, onClose, onSubmit, bucket, isEdit }) => {
           </View>
           
         </View>
+      </View>
         <TouchableWithoutFeedback onPress={handleModalClose}>
           <View style={[styles.modalBG, StyleSheet.absoluteFillObject]} />
         </TouchableWithoutFeedback>
@@ -213,19 +216,21 @@ const BucketInputModal = ({ visible, onClose, onSubmit, bucket, isEdit }) => {
 const styles = StyleSheet.create({
   wrapper:{
     flex: 1,
+    backgroundColor: 'rgba(0,0,0,0.5)',
+
   },
   container: {
     paddingHorizontal: 20,
     paddingTop: 20,
     marginTop: 60,
-    borderRadius: 30,
-    backgroundColor: '#ffe7df',
+    borderRadius: 10,
+    backgroundColor: colors.LIGHT,
     marginHorizontal: 10,
   },
   closeBtn:{
     //backgroundColor: 'black',
     position: 'absolute',
-    right: 10,
+    right: 2,
     top: 10,
 
   },

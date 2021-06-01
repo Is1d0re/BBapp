@@ -181,13 +181,13 @@ const BucketDetail = props => {
             <Text style={styles.value}>${bucket.balance}</Text>
           </View>
           <View style={styles.bucketInfoColumns}>
-            <Text style={styles.metric}>Target Date</Text>
+            <Text style={styles.metric}>Goal Date</Text>
             <Text style={styles.value}>{(targetDateObject).toDateString()}</Text>
           </View>
         </View>
         <View style={styles.bucketInfo}>
         <View style={styles.bucketInfoColumns}>
-            <Text style={styles.metric}>Months until your date:</Text>
+            <Text style={styles.metric}>Months until your goal date:</Text>
             <Text style={styles.metric}>You need to save:</Text>
         </View>
         <View style={styles.bucketInfoColumns}>
@@ -196,7 +196,7 @@ const BucketDetail = props => {
         </View>
       </View>
       </View>
-      <View style = {styles.transactionsSection}>
+      <View style = {[styles.transactionsSection, styles.borderTop]}>
         <Text style= {styles.transactionsTitle}>Transaction History</Text>
         <View style={styles.scrollButton}>
         
@@ -258,7 +258,10 @@ const BucketDetail = props => {
 };
 
 const styles = StyleSheet.create({
-
+  borderTop: {
+    borderTopWidth: .5,
+    borderTopColor: colors.PRIMARY,
+  },
   safeArea:{
     backgroundColor: colors.PRIMARY,
     height: 100,

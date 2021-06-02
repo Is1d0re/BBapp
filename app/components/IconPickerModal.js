@@ -38,26 +38,36 @@ const IconPickerModal = ({visible, closeIconModal, handleIconPicked}) => {
       );
     };
   return (
-      <Modal visible={visible} animationType='slide'>
-          <SafeAreaView />
-          
-          
+      <Modal visible={visible} animationType='slide' transparent>
+        <SafeAreaView />
         <View style={styles.wrapper}>
-        <CloseIconBtn
-                style={styles.closeBtn}
-                antIconName='close'
-                onPress={closeIconModal}
-                
+        <View style={styles.container}>
+          <View style= {styles.headerArea}>
+            
+            <View style={styles.closeBtnArea}>
+                <CloseIconBtn
+                    style={styles.closeBtn}
+                    antIconName='close'
+                    onPress={closeIconModal}
+                    color= {colors.LIGHT}
+                />
+                <View style={styles.titleArea}>
+                    <Text style={styles.modalTitle}>Choose an Icon</Text>
+                </View>
+            </View>
+          </View>
+          <View style={styles.inputArea}>
+            <View style={styles.inputItemRow}>
+              <FlatList
+              data={imageMap}
+              renderItem={renderIcon}
+              keyExtractor={(item) => item.name}
+              numColumns={4}
               />
-         <FlatList
-        data={imageMap}
-        renderItem={renderIcon}
-        keyExtractor={(item) => item.name}
-        
-      />
-        
-        
-        </View>
+            </View>
+          </View>
+      </View>
+      </View>
       </Modal>
   )
 };
@@ -65,67 +75,76 @@ const IconPickerModal = ({visible, closeIconModal, handleIconPicked}) => {
 const styles = StyleSheet.create({
   wrapper:{
     flex: 1,
+    backgroundColor: 'rgba(0,0,0,0.5)',
+
+  },
+  container: {
+    // paddingHorizontal: 20,
+    // paddingTop: 20,
+    marginTop: 60,
+    borderRadius: 5,
+    backgroundColor: colors.LIGHT,
+    marginHorizontal: 10,
+  },
+  headerArea:{
+    backgroundColor: colors.PRIMARY,
+    borderTopStartRadius: 5,
+    borderTopEndRadius: 5,
+    flexDirection: 'column',
+    paddingTop: 10,
+    justifyContent: 'space-evenly'
+
+  },
+  closeBtnArea:{
+    flexDirection: 'row',
+    justifyContent: 'flex-start',
+    paddingLeft: 10,
+    
+    // backgroundColor: 'black',
+    // position: 'absolute',
+    // right: 10,
+    // top: 10,
   },
   icon: {
     height:50,
     width: 50,
-    marginRight: 25,
-    borderWidth: 1,
-    borderColor: 'black',
+    marginRight: 15,
+    marginBottom: 15,
+    // borderWidth: .5,
+    // borderColor: 'gray',
+  
 },
-  gridRow: {
-      flexDirection: 'row',
-      paddingTop: 50,
-  },
-  container: {
-    paddingHorizontal: 20,
-    paddingTop: 20,
-    marginTop: 60,
-    borderRadius: 30,
-    backgroundColor: '#ffe7df',
-    marginHorizontal: 10,
-    height: '90%',
-  },
   closeBtn:{
     //backgroundColor: 'black',
-    position: 'absolute',
-    right: 10,
-    top: 10,
-    zIndex: 1,
+    // position: 'absolute',
+    // right: 10,
+    // top: 10,
+    // zIndex: 1,
 
+  },
+  titleArea:{
+    flexDirection: 'row',
+    justifyContent: 'center',
+    flexWrap: 'wrap',
+    marginLeft: 10,
   },
   modalTitle:{
     fontSize:22,
     fontWeight: 'bold',
-    color: '#8daca6',
-    marginTop: 10,
+    color: colors.LIGHT,
+    flexWrap: 'wrap',
     marginBottom: 20,
-    paddingTop: 10,
+    marginLeft: 10,
+  
     
   },
-  input: {
-    borderBottomWidth: 2,
-    borderBottomColor: colors.PRIMARY,
-    fontSize: 20,
-    color: colors.DARK,
-  },
-  title: {
-    height: 40,
-    marginBottom: 15,
-    fontWeight: 'bold',
-  },
-  goal: {
-   // height: 100,
-  },
-  modalBG: {
-    flex: 1,
-    zIndex: -1,
-  },
-  btnContainer: {
+  inputArea: {
     flexDirection: 'row',
-    justifyContent: 'center',
-    paddingVertical: 15,
+    paddingTop: 25,
+    paddingHorizontal: 20,
+    justifyContent: 'center'
   },
+
 });
 
 export default IconPickerModal;

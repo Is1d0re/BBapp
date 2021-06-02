@@ -30,6 +30,26 @@ const imageMap = [
         name: 'rainyday',
         path: JSON.stringify(require('../../assets/icons/rainy-day.png')),
       },
+      {
+        name: 'confetti',
+        path: JSON.stringify(require('../../assets/icons/confetti.png')),
+      },
+      {
+        name: 'giftbox',
+        path: JSON.stringify(require('../../assets/icons/giftbox.png')),
+      },
+      {
+        name: 'online-shopping',
+        path: JSON.stringify(require('../../assets/icons/online-shopping.png')),
+      },
+      {
+        name: 'photo',
+        path: JSON.stringify(require('../../assets/icons/photo.png')),
+      },
+      {
+        name: 'smartphone',
+        path: JSON.stringify(require('../../assets/icons/smartphone.png')),
+      },
   ];
 
 export default imageMap;

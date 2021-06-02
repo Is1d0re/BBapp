@@ -167,6 +167,7 @@ const BucketInputModal = ({ visible, onClose, onSubmit, bucket, isEdit }) => {
                   onChangeText={text => handleOnChangeText(text, 'title')}
                   placeholder='Title'
                   style={[styles.input]}
+                  returnKeyType= 'done'
                 />
               </View>
             </View>
@@ -192,6 +193,7 @@ const BucketInputModal = ({ visible, onClose, onSubmit, bucket, isEdit }) => {
                   style={[styles.input, styles.goal]}
                   onChangeText={text => handleOnChangeText(text, 'goal')}
                   keyboardType = 'numeric'
+                  returnKeyType= 'done'
               />
              </View>
             </View>
@@ -220,6 +222,7 @@ const BucketInputModal = ({ visible, onClose, onSubmit, bucket, isEdit }) => {
                     style={[styles.input, styles.goal]}
                     onChangeText={text => handleOnChangeText(text, 'balance')}
                     keyboardType = 'numeric'
+                    returnKeyType= 'done'
                   /> 
                 </View>
               </View>

@@ -193,7 +193,7 @@ const BucketInputModal = ({ visible, onClose, onSubmit, bucket, isEdit }) => {
                   onChangeText={text => handleOnChangeText(text, 'goal')}
                   keyboardType = 'numeric'
               />
-              </View>
+             </View>
             </View>
             <View style={styles.inputItemRow}>
               <View style={styles.inputItemColumn}>
@@ -226,8 +226,6 @@ const BucketInputModal = ({ visible, onClose, onSubmit, bucket, isEdit }) => {
               ) : null
             }
             </View>
-          
-
           
           
          

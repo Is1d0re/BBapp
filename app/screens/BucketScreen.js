@@ -60,6 +60,7 @@ const BucketScreen = ({ user, navigation }) => {
     const bucket = { id: Date.now(), title , goal, balance, targetDate, icon, transactions, time: Date.now() };
     const updatedBuckets = [...buckets, bucket];
     setBuckets(updatedBuckets);
+    console.log(updatedBuckets);
     await AsyncStorage.setItem('buckets', JSON.stringify(updatedBuckets));
   };
 

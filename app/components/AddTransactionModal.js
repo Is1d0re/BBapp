@@ -247,17 +247,13 @@ titleArea:{
   justifyContent: 'center',
   flexWrap: 'wrap',
   marginLeft: 10,
-  
+  flexShrink: 1,
+
 },
   modalTitle:{
     fontSize:22,
     fontWeight: 'bold',
     color: colors.LIGHT,
-    flexWrap: 'wrap',
-    // marginTop: 10,
-    // marginBottom: 20,
-    // paddingTop: 10,
-    
   },
   switchArea: {
     padding: 15,

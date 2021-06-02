@@ -143,7 +143,7 @@ const BucketDetail = props => {
   const goalNumber = Number(bucket.goal);
   const balanceNumber = Number(bucket.balance);
   const todayDate = new Date;
-  const diffDates = (targetDateObject - todayDate);
+  const diffDates = targetDateObject - todayDate;
   const msInMonth = 1000 * 3600 * 24 * 30; 
   const amountPermMonth = Math.round((goalNumber - balanceNumber)/(diffDates/msInMonth));
   const data = bucket.transactions
@@ -190,7 +190,7 @@ const BucketDetail = props => {
             <Text style={styles.metric}>You need to save:</Text>
         </View>
         <View style={styles.bucketInfoColumns}>
-            <Text style={styles.value}>{(diffDates/msInMonth).toFixed(2)}</Text>
+            <Text style={styles.value}>{Math.round((diffDates/msInMonth))}</Text>
             <Text style={styles.value}>${amountPermMonth} per Month </Text>
         </View>
       </View>
@@ -212,7 +212,8 @@ const BucketDetail = props => {
                     <Transaction item={item}/>
                   )} 
                 />
-                ) : <Text style={styles.noTransactions}>Press the wallet button to add your first transaction!</Text>
+                ) : 
+                <Text style={styles.noTransactions}>Press the wallet button to add your first transaction!</Text>
           }
         </View>
       </View>
@@ -301,6 +302,7 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     marginLeft: 50,
     justifyContent: 'center',
+    flexWrap: 'wrap',
   },
   metric: {
     fontSize: 16,
@@ -323,7 +325,7 @@ const styles = StyleSheet.create({
   transactionsSection: {
     borderRadius: 10,
     backgroundColor: colors.LIGHT,
-    flex: 2,
+    flex: 1,
   },
   transactionsTitle: {
     fontSize: 22,
@@ -334,11 +336,12 @@ const styles = StyleSheet.create({
   },
   transactionsList: {
     flex: 1,
-    flexDirection: 'column-reverse',
+    flexDirection: 'column',
   },
   noTransactions: {
     fontSize: 14,
     paddingLeft: 20,
+    color: colors.PRIMARY
   },
   btnContainer: {
     position: 'absolute',

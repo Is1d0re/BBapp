@@ -145,7 +145,8 @@ const BucketDetail = props => {
   const todayDate = new Date;
   const diffDates = targetDateObject - todayDate;
   const msInMonth = 1000 * 3600 * 24 * 30; 
-  const amountPermMonth = Math.round((goalNumber - balanceNumber)/(diffDates/msInMonth));
+  const amountPermMonth = ((goalNumber - balanceNumber)/(diffDates/msInMonth)).toFixed(2);
+
   const data = bucket.transactions
 
   

@@ -133,7 +133,7 @@ const [multiplier, setMultiplier] = useState('1')
 
   return (
       <Modal visible={visible} transparent>
-        <SafeAreaView />
+        <SafeAreaView style={styles.safeArea} />
 
         <View style={styles.container}>
           <View style={styles.headerArea}>
@@ -205,21 +205,18 @@ const styles = StyleSheet.create({
   modalBG: {
     flex: 1,
     zIndex: -1,
-    backgroundColor: 'rgba(0,0,0,0.5)',
+    backgroundColor: colors.LIGHT,
 
   },
+  safeArea:{
+    backgroundColor: colors.PRIMARY,
+  },
   container: {
-    // paddingHorizontal: 20,
-    // paddingTop: 20,
-    marginTop: 60,
     borderRadius: 5,
     backgroundColor: colors.LIGHT,
-    marginHorizontal: 10,
   },
   headerArea:{
     backgroundColor: colors.PRIMARY,
-    borderTopStartRadius: 5,
-    borderTopEndRadius: 5,
     flexDirection: 'column',
     paddingTop: 10,
   },
@@ -227,11 +224,6 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'flex-start',
     paddingLeft: 10,
-    
-    // backgroundColor: 'black',
-    // position: 'absolute',
-    // right: 10,
-    // top: 10,
   },
 closeBtn: {
   
@@ -265,7 +257,7 @@ titleArea:{
   },
   dateArea: {
     justifyContent: 'flex-end',
-    paddingHorizontal: 5,
+    paddingHorizontal: 15,
     marginTop: 10,
   },
   datePicker: {

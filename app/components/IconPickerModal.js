@@ -38,8 +38,8 @@ const IconPickerModal = ({visible, closeIconModal, handleIconPicked}) => {
       );
     };
   return (
-      <Modal visible={visible} animationType='slide' transparent>
-        <SafeAreaView />
+      <Modal visible={visible} animationType='fade' transparent>
+        <SafeAreaView style={styles.safeArea}/>
         <View style={styles.wrapper}>
         <View style={styles.container}>
           <View style= {styles.headerArea}>
@@ -75,6 +75,10 @@ const IconPickerModal = ({visible, closeIconModal, handleIconPicked}) => {
 const styles = StyleSheet.create({
   wrapper:{
     flex: 1,
+    backgroundColor: 'rgba(0,0,0,0.5)',
+
+  },
+  safeArea:{
     backgroundColor: 'rgba(0,0,0,0.5)',
 
   },

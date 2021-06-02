@@ -135,9 +135,9 @@ const BucketInputModal = ({ visible, onClose, onSubmit, bucket, isEdit }) => {
 
   return (
     <>
-      <Modal visible={visible} transparent>
+      <Modal visible={visible} animationType='slide'>
       <View style={styles.wrapper}>
-        <SafeAreaView />
+        <SafeAreaView style={styles.safeArea} />
         <View style={styles.container}>
           <View style= {styles.headerArea}>
             <View style={styles.closeBtnArea}>
@@ -190,7 +190,7 @@ const BucketInputModal = ({ visible, onClose, onSubmit, bucket, isEdit }) => {
               <TextInput
                   value={goal}
                   placeholder='Goal Amount'
-                  style={[styles.input, styles.goal]}
+                  style={[styles.input]}
                   onChangeText={text => handleOnChangeText(text, 'goal')}
                   keyboardType = 'numeric'
                   returnKeyType= 'done'
@@ -219,7 +219,7 @@ const BucketInputModal = ({ visible, onClose, onSubmit, bucket, isEdit }) => {
                   <TextInput
                     value={balance}
                     placeholder='Current Balance'
-                    style={[styles.input, styles.goal]}
+                    style={[styles.input  ]}
                     onChangeText={text => handleOnChangeText(text, 'balance')}
                     keyboardType = 'numeric'
                     returnKeyType= 'done'
@@ -247,18 +247,14 @@ const BucketInputModal = ({ visible, onClose, onSubmit, bucket, isEdit }) => {
          
 
   
-          <View style={styles.btnContainer}>
+         <View style={styles.btnContainer}>
             <RoundIconBtn
               size={30} 
               antIconName='check'
-              onPress={handleCheck}
+              onPress={() => {handleCheck();}}
+              style={styles.btn}
+              submit = {'submit'}
             />
-              <RoundIconBtn
-                size={30}
-                style={{ marginLeft: 15 }}
-                antIconName='close'
-                onPress={closeModal}
-              />
           </View>
           </View>
         </View>
@@ -271,35 +267,25 @@ const BucketInputModal = ({ visible, onClose, onSubmit, bucket, isEdit }) => {
 };
 
 const styles = StyleSheet.create({
-  wrapper:{
-    flex: 1,
-    backgroundColor: 'rgba(0,0,0,0.5)',
+  // wrapper:{
+  //   flex: 1,
+  //   backgroundColor: 'rgba(0,0,0,0.5)',
 
+  // },
+  safeArea:{
+    backgroundColor: colors.PRIMARY,
   },
   container: {
-    // paddingHorizontal: 20,
-    // paddingTop: 20,
-    marginTop: 60,
-    borderRadius: 5,
     backgroundColor: colors.LIGHT,
-    marginHorizontal: 10,
   },
   closeBtnArea:{
     flexDirection: 'row',
     justifyContent: 'flex-start',
     paddingLeft: 10,
     paddingBottom: 15,
-    // backgroundColor: 'black',
-    // position: 'absolute',
-    // right: 10,
-    // top: 10,
   },
   closeBtn:{
-    //backgroundColor: 'black',
-    // position: 'absolute',
-    // right: 2,
-    // top: 10,
-
+ 
   },
   icon: {
     height:50,
@@ -307,8 +293,6 @@ const styles = StyleSheet.create({
 },
 headerArea:{
   backgroundColor: colors.PRIMARY,
-  borderTopStartRadius: 5,
-  borderTopEndRadius: 5,
   flexDirection: 'column',
   paddingTop: 10,
 },
@@ -316,16 +300,13 @@ titleArea:{
   flexDirection: 'row',
   justifyContent: 'center',
   flexWrap: 'wrap',
-  marginLeft: 10,
+  marginLeft: 20,
 },
 modalTitle:{
-  fontSize:22,
+  fontSize:18,
   fontWeight: 'bold',
   color: colors.LIGHT,
   flexWrap: 'wrap',
-  // marginTop: 10,
-  // marginBottom: 20,
-  // paddingTop: 10,
   
 },
 inputArea: {
@@ -373,6 +354,11 @@ input: {
     flexDirection: 'row',
     justifyContent: 'center',
     paddingVertical: 15,
+  },
+  btn: {
+    borderRadius: 5,
+    width: '70%',
+    
   },
 });
 

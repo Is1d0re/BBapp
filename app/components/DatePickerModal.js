@@ -22,9 +22,11 @@ import DateTimePicker from '@react-native-community/datetimepicker';
 import xtype from 'xtypejs'
 
 
+
 const DatePickerModal = ({visible, closeDateModal, handleDatePicked}) => {
   const [date, setDate] = useState();
   const [selectedDate, setSelectedDate] = useState(new Date());
+  
  
   const onChange = (event, selectedDate) => {
     const currentDate = selectedDate || date;
@@ -61,16 +63,12 @@ const DatePickerModal = ({visible, closeDateModal, handleDatePicked}) => {
           value={selectedDate}
           mode='date'
           is24Hour={true}
-          display="spinner"
+          display="calendar"
           onChange={onChange}
           minimumDate={todayDate}
         />
-        <Button title='done' onPress={() => {closeDateModal(); handleDatePicked(date); console.log(date)}} />
+        <Button title='done' onPress={() => {closeDateModal(); handleDatePicked(date);}} />
         <Text>Target Date: {dateString} </Text>
-        <Text>Goal Amount: ${goal}</Text>
-        <Text>Current Balance: ${balance} </Text>
-        <Text>Months until your date: {(diffDates/msInMonth).toFixed(2)}</Text>
-        <Text>You need to save ${amountPermMonth} per Month </Text>
         
         
       

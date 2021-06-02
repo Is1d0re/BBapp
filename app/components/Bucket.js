@@ -6,14 +6,19 @@ import {
   Dimensions,
   TouchableOpacity,
   Image,
+  ColorPropType,
 } from 'react-native';
 import colors from '../misc/colors';
 import imageMap from '../misc/imageMap';
+import RoundIconBtn from '../components/RoundIconBtn';
 import xtype from 'xtypejs'
 
-const Bucket = ({ item, onPress }) => {
-  const { title, goal, balance, targetDate, icon } = item;
+const Bucket = ({ item, onPress, openEditModal }) => {
+  const { title, goal, balance, targetDate, icon, transactions } = item;
   const targetDateObject = new Date(JSON.parse(targetDate));
+ 
+
+
   return (
     <TouchableOpacity onPress={onPress} style={styles.container}>
       <View style={styles.bucketLeft}>
@@ -24,12 +29,18 @@ const Bucket = ({ item, onPress }) => {
       <Text style={styles.title} numberOfLines={2}>
         {title}
       </Text>
-      <Text>{goal}</Text>
-      <Text>{balance}</Text>
+      <Text style= {styles.content} >Goal: ${goal}</Text>
+      <Text style= {styles.content} >Current Balance: ${balance}</Text>
 
-    <Text>{(targetDateObject).toDateString()}</Text>
+    <Text style= {styles.content} >Goal Date: {(targetDateObject).toDateString()}</Text>
       </View>
+
+    
+
     </TouchableOpacity>
+
+    
+
   );
 };
 
@@ -37,21 +48,28 @@ const width = Dimensions.get('window').width - 40;
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: colors.PRIMARY,
+    backgroundColor: colors.LIGHT,
     //width: '90%',
     height: 100,
     padding: 8,
-    borderRadius: 10,
-    marginBottom: 10,
+    borderRadius: 5,
+    marginBottom: 2,
     flexDirection: 'row',
     alignItems: 'center',
+    borderColor: colors.DARK,
+    shadowColor: 'black',
+    shadowOffset: {width: 0, height: 1},
+    shadowRadius: 1,
+    shadowOpacity: 0.25,
   },
   title: {
     fontWeight: 'bold',
     fontSize: 16,
-    color: colors.LIGHT,
+    color: colors.PRIMARY,
   },
-
+content: {
+  color: colors.DARK,
+},
 bucketLeft: {
     flexDirection: 'row',
     alignItems: 'center',

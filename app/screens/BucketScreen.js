@@ -10,6 +10,7 @@ import {
   FlatList,
   SafeAreaView,
   Button,
+  Image,
 } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import Bucket from '../components/Bucket';
@@ -36,6 +37,7 @@ const BucketScreen = ({ user, navigation }) => {
   const [modalVisible, setModalVisible] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
   const [resultNotFound, setResultNotFound] = useState(false);
+  // const [searchFilter, setSearchFilter] = useState([]);
 
   const { buckets, setBuckets, findBuckets } = useBuckets();
 
@@ -52,10 +54,10 @@ const BucketScreen = ({ user, navigation }) => {
 
   const reverseBuckets = reverseData(buckets);
 
-  const handleOnSubmit = async (title, goal, balance, targetDate, icon) => {
-    //console.log(xtype(targetDate));
+  const handleOnSubmit = async (title, goal, balance, targetDate, icon, transactions) => {
     const JSONtargetDate = JSON.stringify(targetDate);
-    const bucket = { id: Date.now(), title , goal, balance, targetDate, icon, time: Date.now() };
+    const JSONtransactions = JSON.stringify(transactions)
+    const bucket = { id: Date.now(), title , goal, balance, targetDate, icon, transactions, time: Date.now() };
     const updatedBuckets = [...buckets, bucket];
     setBuckets(updatedBuckets);
     console.log(updatedBuckets);
@@ -84,6 +86,7 @@ const BucketScreen = ({ user, navigation }) => {
     } else {
       setResultNotFound(true);
     }
+    // setSearchFilter(buckets);
   };
 
   const handleOnClear = async () => {
@@ -94,10 +97,14 @@ const BucketScreen = ({ user, navigation }) => {
 
   return (
     <>
-      <SafeAreaView />
+      <SafeAreaView style={styles.safeArea}>
+      <Image style={styles.icon} source = {require('../../assets/BBicon.png')} />
+      <Text style={styles.header}>{`Good ${greet} ${user.name}`}</Text>
+      </SafeAreaView>
       <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
         <View style={styles.container}>
-          <Text style={styles.header}>{`Good ${greet} ${user.name}`}</Text>
+        <View style={styles.bucketsList}>
+          <Text style= {styles.pageTitle}>Your Savings Buckets</Text>
           {buckets.length ? (
             <SearchBar
               value={searchQuery}
@@ -106,7 +113,7 @@ const BucketScreen = ({ user, navigation }) => {
               onClear={handleOnClear}
             />
           ) : null}
-
+        
           {resultNotFound ? (
             <NotFound />
           ) : (
@@ -114,7 +121,7 @@ const BucketScreen = ({ user, navigation }) => {
               data={reverseBuckets}
               keyExtractor={item => item.id.toString()}
               renderItem={({ item }) => (
-                <Bucket onPress={() => openBucket(item)} item={item} />
+                <Bucket onPress={() => {openBucket(item); handleOnClear()}} item={item} openEditModal={() => setModalVisible(true)}/>
               )}
             />
           )}
@@ -130,6 +137,8 @@ const BucketScreen = ({ user, navigation }) => {
             </View>
           ) : null}
         </View>
+        </View>
+        
       </TouchableWithoutFeedback>
       
       <RoundIconBtn
@@ -142,23 +151,46 @@ const BucketScreen = ({ user, navigation }) => {
         onClose={() => setModalVisible(false)}
         onSubmit={handleOnSubmit}
       />
-      
-      <Button title='reset databases' color='red' onPress={() => AsyncStorage.clear()} />
 
+      
     </>
   );
 };
 
 const styles = StyleSheet.create({
+  safeArea:{
+    backgroundColor: colors.PRIMARY,
+    flexDirection: 'row',
+    justifyContent: 'flex-start',
+    alignItems: 'baseline',
+  },
+  icon: {
+    height: 50,
+    width: 50,
+    marginLeft: 20, 
+    marginRight: 20,
+    borderRadius: 100,
+  },
   header: {
-    fontSize: 25,
+    fontSize: 18,
     fontWeight: 'bold',
+    paddingLeft: 15,
+    paddingBottom: 18,
+    marginTop:10,
+    color: colors.LIGHT,
+    
+  },
+  pageTitle: {
+    paddingTop: 30,
+    fontSize: 22,
+    fontWeight: 'bold',
+    paddingLeft: 15,
   },
   container: {
-    paddingHorizontal: 20,
-    paddingTop: 20,
+    paddingHorizontal: 4,
     flex: 1,
     zIndex: 1,
+    backgroundColor: colors.LIGHT,
   },
   emptyHeader: {
     fontSize: 30,
@@ -178,7 +210,16 @@ const styles = StyleSheet.create({
     bottom: 50,
     zIndex: 1,
     borderRadius: 60,
-    backgroundColor: colors.PRIMARY
+    backgroundColor: colors.PRIMARY,
+  },
+  bucketsList:{
+    backgroundColor: colors.LIGHT,
+    padding: 1,
+    // borderRadius: 8,
+    flex: 2,
+  },
+  footer:{
+    marginTop: 20,
   },
 });
 

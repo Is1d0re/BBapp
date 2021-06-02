@@ -30,12 +30,8 @@ import DateTimePicker from '@react-native-community/datetimepicker';
 
 const AddTransactionModal = ({ visible, onClose, onSubmit, bucket, isEdit, bucketTitle  }) => {
   const [title, setTitle] = useState('');
-  const [goal, setGoal] = useState('');
   const [balance, setBalance] = useState('');
-  const [targetDate, setTargetDate] = useState();
-  const [icon, setIcon] = useState();
   const [transactions, setTransactions] = useState([]);
-  const [month, setMonth] = useState('');
   const [amount, setAmount] = useState('');
   const [pendingTransactions, setPendingTransactions] = useState([]);
 
@@ -46,12 +42,13 @@ const AddTransactionModal = ({ visible, onClose, onSubmit, bucket, isEdit, bucke
 
   const [date, setDate] = useState(new Date());
   const [selectedDate, setSelectedDate] = useState(JSON.stringify(new Date()));
+  const [selectedDateObject, setSelectedDateObject] = useState(new Date())
   const [show, setShow] = useState(false);
  
   const onChange = (event, selectedDate) => {
     const currentDate = selectedDate || date;
-    setShow(Platform.OS === 'ios');
-    setSelectedDate(JSON.stringify(currentDate))
+    setSelectedDate(JSON.stringify(currentDate));
+    setSelectedDateObject(currentDate);
   
   };
 
@@ -62,12 +59,8 @@ const AddTransactionModal = ({ visible, onClose, onSubmit, bucket, isEdit, bucke
   useEffect(() => {
     if (isEdit) {
       setTitle(bucket.title);
-      setGoal(bucket.goal);
       setBalance(bucket.balance);
-      setTargetDate(bucket.targetDate);
-      setIcon(bucket.icon);
       setTransactions(bucket.transactions);
-      setMonth('');
       setAmount('');
       setPendingTransactions([]);
       setSelectedDate(JSON.stringify(new Date()))
@@ -76,18 +69,11 @@ const AddTransactionModal = ({ visible, onClose, onSubmit, bucket, isEdit, bucke
   }, [isEdit]);
 
   const handleOnChangeText = (text, valueFor) => {
-    if (valueFor === 'month') setMonth(text);
     if (valueFor === 'amount') setAmount(text);
-    
-    
   };
 
  
   const handleSubmit = () => {
-    // if (!pendingTransactions[0]){
-    //     alert('no pending transactions to commit')
-    //     return
-    // }
     if (amount ===''){
       alert('please enter an amount')
       return;
@@ -100,8 +86,8 @@ const AddTransactionModal = ({ visible, onClose, onSubmit, bucket, isEdit, bucke
       const newBalance = balanceNumber + Number(negativeAmount) 
       const transaction = {transactionID, selectedDate, amount, newBalance, multiplier};
       const updatedTransactions = [transaction, ...transactions];
-      // transactions.unshift(JSON.stringify(transaction));
-      setTransactions(updatedTransactions);  
+      transactions.unshift(transaction);
+      // setTransactions(updatedTransactions);  
       setBalance(JSON.stringify(newBalance));
       setPendingTransactions([transaction, ...pendingTransactions]);
       setAmount('');
@@ -115,13 +101,14 @@ const AddTransactionModal = ({ visible, onClose, onSubmit, bucket, isEdit, bucke
       const newBalance = balanceNumber + Number(amount) 
       const transaction = {transactionID, selectedDate, amount, newBalance, multiplier};
       const updatedTransactions = [transaction, ...transactions];
-      // transactions.unshift(JSON.stringify(transaction));
-      setTransactions(updatedTransactions);
+      transactions.unshift(transaction);
+      // setTransactions(updatedTransactions);
       setBalance(JSON.stringify(newBalance));
       setPendingTransactions([transaction, ...pendingTransactions]);
       setAmount('');
       setSelectedDate(JSON.stringify(new Date())); 
-      setMultiplier('1')
+      setMultiplier('1');
+      setSelectedDateObject(new Date());
       onSubmit(newBalance, updatedTransactions, Date.now()); 
       onClose();
     };
@@ -131,14 +118,11 @@ const AddTransactionModal = ({ visible, onClose, onSubmit, bucket, isEdit, bucke
   const closeModal = () => {
     if (isEdit) {
       setTitle('');
-      setGoal('');
       setBalance('');
-      setTargetDate();
-      setIcon();
       setTransactions([]);
-      setMonth('');
       setAmount('');
       setPendingTransactions([]);
+      setSelectedDateObject(new Date());
     }
     onClose();
   };
@@ -146,32 +130,6 @@ const AddTransactionModal = ({ visible, onClose, onSubmit, bucket, isEdit, bucke
 
 const [multiplier, setMultiplier] = useState('1')
 
-// const addTransaction = () => {
-//   if (amount ===''){
-//     alert('please enter an amount')
-//     return;
-//     } 
-//   if (multiplier === '-1'){
-//     const negativeAmount = Number(amount) * -1
-//     setAmount(negativeAmount.toString())
-//     const transactionID = Date.now();
-//     const balanceNumber = Number(balance)
-//     const newBalance = balanceNumber + Number(negativeAmount) 
-//     const transaction = {transactionID, selectedDate, amount, newBalance};
-//     const updatedTransactions = [transaction, ...transactions];
-//     // transactions.unshift(JSON.stringify(transaction));
-//     setTransactions(updatedTransactions);    
-//   }
- 
-//   const transactionID = Date.now();
-//   const balanceNumber = Number(balance)
-//   const newBalance = balanceNumber + Number(amount) 
-//   const transaction = {transactionID, selectedDate, amount, newBalance};
-//   const updatedTransactions = [transaction, ...transactions];
-//   // transactions.unshift(JSON.stringify(transaction));
-//   setTransactions(updatedTransactions);
-  
-// };
 
   return (
       <Modal visible={visible} transparent>
@@ -202,7 +160,7 @@ const [multiplier, setMultiplier] = useState('1')
                 <Text style={styles.label}>Date:</Text>
                     <DateTimePicker
                         testID="dateTimePicker"
-                        value={new Date()}
+                        value={selectedDateObject}
                         mode='date'
                         is24Hour={true}
                         display="calendar"
@@ -232,12 +190,6 @@ const [multiplier, setMultiplier] = useState('1')
               style={styles.btn}
               submit = {'submit'}
             />
-              {/* <RoundIconBtn
-                size={30}
-                style={{ marginLeft: 15 }}
-                antIconName='close'
-                onPress={closeModal}
-              /> */}
           </View>
         </View>
     
@@ -275,6 +227,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'flex-start',
     paddingLeft: 10,
+    
     // backgroundColor: 'black',
     // position: 'absolute',
     // right: 10,
@@ -284,18 +237,18 @@ closeBtn: {
   
 },
 
-  btn: {
-    borderRadius: 5,
-    width: '70%',
-    
+btn: {
+  borderRadius: 5,
+  width: '70%',
+  
 },
 titleArea:{
   flexDirection: 'row',
   justifyContent: 'center',
   flexWrap: 'wrap',
   marginLeft: 10,
+  
 },
-
   modalTitle:{
     fontSize:22,
     fontWeight: 'bold',

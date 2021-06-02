@@ -37,6 +37,7 @@ const BucketScreen = ({ user, navigation }) => {
   const [modalVisible, setModalVisible] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
   const [resultNotFound, setResultNotFound] = useState(false);
+  // const [searchFilter, setSearchFilter] = useState([]);
 
   const { buckets, setBuckets, findBuckets } = useBuckets();
 
@@ -84,6 +85,7 @@ const BucketScreen = ({ user, navigation }) => {
     } else {
       setResultNotFound(true);
     }
+    // setSearchFilter(buckets);
   };
 
   const handleOnClear = async () => {
@@ -118,7 +120,7 @@ const BucketScreen = ({ user, navigation }) => {
               data={reverseBuckets}
               keyExtractor={item => item.id.toString()}
               renderItem={({ item }) => (
-                <Bucket onPress={() => openBucket(item)} item={item} openEditModal={() => setModalVisible(true)}/>
+                <Bucket onPress={() => {openBucket(item); handleOnClear()}} item={item} openEditModal={() => setModalVisible(true)}/>
               )}
             />
           )}

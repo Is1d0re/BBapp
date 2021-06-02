@@ -23,6 +23,7 @@ import { AntDesign } from '@expo/vector-icons';
 import IconPickerModal from './IconPickerModal';
 import DatePickerModal from './DatePickerModal';
 import DateTimePicker from '@react-native-community/datetimepicker';
+import { Colors } from 'react-native/Libraries/NewAppScreen';
 
 
 const BucketInputModal = ({ visible, onClose, onSubmit, bucket, isEdit }) => {
@@ -46,6 +47,7 @@ const BucketInputModal = ({ visible, onClose, onSubmit, bucket, isEdit }) => {
       setTargetDate(bucket.targetDate);
       setIcon(bucket.icon);
       setTransactions(bucket.transactions);
+      setSelectedDate(new Date(JSON.parse(bucket.targetDate)))
     }
   }, [isEdit]);
 
@@ -94,6 +96,7 @@ const BucketInputModal = ({ visible, onClose, onSubmit, bucket, isEdit }) => {
       setBalance('');
       setTargetDate(JSON.stringify(new Date()));
       setIcon();
+      setSelectedDate(new Date());
     }
     onClose();
   };
@@ -105,6 +108,7 @@ const BucketInputModal = ({ visible, onClose, onSubmit, bucket, isEdit }) => {
       setBalance('');
       setTargetDate();
       setIcon();
+      setSelectedDate(new Date());
     }
     onClose();
   };
@@ -113,9 +117,19 @@ const BucketInputModal = ({ visible, onClose, onSubmit, bucket, isEdit }) => {
   const handleOpenPicker = () => setIconModalVisible(true);
   const handleIconPicked = (pickedicon) => setIcon(pickedicon)
 
-  const [DatemodalVisible, setDateModalVisible] = useState(false);
-  const handleOpenDatePicker = () => setDateModalVisible(true);
-  const handleDatePicked = (pickeddate) => {setTargetDate(pickeddate)};
+
+  const [date, setDate] = useState(new Date());
+  const [show, setShow] = useState(false);
+  const [selectedDate, setSelectedDate] = useState(new Date());
+
+
+ 
+  const onChange = (event, selectedDate) => {
+    const currentDate = selectedDate || date;
+    setSelectedDate(currentDate)
+    setTargetDate(JSON.stringify(currentDate));
+    setDate(JSON.stringify(currentDate));
+  };
 
 
 
@@ -125,68 +139,111 @@ const BucketInputModal = ({ visible, onClose, onSubmit, bucket, isEdit }) => {
       <View style={styles.wrapper}>
         <SafeAreaView />
         <View style={styles.container}>
-        <CloseIconBtn
-                style={styles.closeBtn}
-                antIconName='close'
-                onPress={closeModal}
+          <View style= {styles.headerArea}>
+            <View style={styles.closeBtnArea}>
+                <CloseIconBtn
+                    style={styles.closeBtn}
+                    antIconName='close'
+                    onPress={closeModal}
+                    color= {colors.LIGHT}
                 
+                />
+            
+                <View style={styles.titleArea}>
+                  {(isEdit) ? (
+                    <Text style={styles.modalTitle}>Bucket Editor!</Text>
+                    ) : <Text style={styles.modalTitle}>Create a Bucket!</Text>
+                  } 
+                </View>
+            
+            </View>
+          </View>
+          <View style={styles.inputArea}>
+            <View style={styles.inputItemRow}>
+              <View style={styles.inputItemColumn}>
+              <Text style={styles.label}>Title:</Text>
+                <TextInput
+                  value={title}
+                  onChangeText={text => handleOnChangeText(text, 'title')}
+                  placeholder='Title'
+                  style={[styles.input]}
+                />
+              </View>
+            </View>
+            <View style={styles.inputItemRow}>
+              <View style={styles.inputItemColumn}>
+                <Text style={styles.label}>Icon:</Text>
+                <TouchableOpacity onPress={handleOpenPicker}>
+                {icon ? (
+                    <Image style={styles.icon} source = {JSON.parse(icon)} />
+                  ) : ( <Image style={styles.icon} source = {require('./../../assets/icons/picture.png')} />
+                  )}
+                  
+                </TouchableOpacity>
+              
+              </View>
+            </View>
+            <View style={styles.inputItemRow}>
+              <View style={styles.inputItemColumn}>
+              <Text style={styles.label}>Goal:</Text>
+              <TextInput
+                  value={goal}
+                  placeholder='Goal Amount'
+                  style={[styles.input, styles.goal]}
+                  onChangeText={text => handleOnChangeText(text, 'goal')}
+                  keyboardType = 'numeric'
               />
-        {(isEdit) ? (
-          <Text style={styles.modalTitle}>Bucket Editor!</Text>
-          ) : <Text style={styles.modalTitle}>Create a Bucket!</Text>
-        } 
-          <TextInput
-            value={title}
-            onChangeText={text => handleOnChangeText(text, 'title')}
-            placeholder='Title'
-            style={[styles.input, styles.title]}
-          />
-          <TextInput
-            value={goal}
-            placeholder='Goal Amount'
-            style={[styles.input, styles.goal]}
-            onChangeText={text => handleOnChangeText(text, 'goal')}
-            keyboardType = 'numeric'
-          />
-
-          {!(isEdit)? (
-          <TextInput
-            value={balance}
-            placeholder='Current Balance'
-            style={[styles.input, styles.goal]}
-            onChangeText={text => handleOnChangeText(text, 'balance')}
-            keyboardType = 'numeric'
-          /> ) : null
-          }
+              </View>
+            </View>
+            <View style={styles.inputItemRow}>
+              <View style={styles.inputItemColumn}>
+              <Text style={styles.label}>Date:</Text>
+                    <DateTimePicker
+                        testID="dateTimePicker"
+                        value={selectedDate}
+                        mode='date'
+                        is24Hour={true}
+                        display="calendar"
+                        onChange={onChange}
+                        style={{height: 30, width: 130}}
+                     />
+                </View>
+              </View>
+              {!(isEdit)? (
+              <View style={styles.inputItemRow}>
+                <View style={styles.inputItemColumn}>
+                  <Text style={styles.label}>Current Balance:</Text>
+                  
+                  <TextInput
+                    value={balance}
+                    placeholder='Current Balance'
+                    style={[styles.input, styles.goal]}
+                    onChangeText={text => handleOnChangeText(text, 'balance')}
+                    keyboardType = 'numeric'
+                  /> 
+                </View>
+              </View>
+              ) : null
+            }
+            </View>
           
-         <Button title='Select a Target Date' onPress={handleOpenDatePicker} />
+
+          
+          
          
-         {targetDate ? (
+         {/* {targetDate ? (
           <Text>{(new Date(JSON.parse(targetDate))).toDateString()}</Text>
          ): null
-         }
-
-          <TouchableOpacity onPress={handleOpenPicker}
-          >
-          {icon ? (
-              <Image style={styles.icon} source = {JSON.parse(icon)} />
-            ) : ( <Image style={styles.icon} source = {require('./../../assets/icons/picture.png')} />
-            )}
-            
-          </TouchableOpacity>
+         } */}
 
           
+
           <IconPickerModal
           visible={IconmodalVisible}
           closeIconModal={ () => setIconModalVisible(false)}
           handleIconPicked={handleIconPicked}
           /> 
-
-          <DatePickerModal
-          visible={DatemodalVisible}
-          closeDateModal={ () => setDateModalVisible(false)}
-          handleDatePicked={handleDatePicked}
-          />  
+         
 
   
           <View style={styles.btnContainer}>
@@ -202,9 +259,8 @@ const BucketInputModal = ({ visible, onClose, onSubmit, bucket, isEdit }) => {
                 onPress={closeModal}
               />
           </View>
-          
+          </View>
         </View>
-      </View>
         <TouchableWithoutFeedback onPress={handleModalClose}>
           <View style={[styles.modalBG, StyleSheet.absoluteFillObject]} />
         </TouchableWithoutFeedback>
@@ -220,39 +276,86 @@ const styles = StyleSheet.create({
 
   },
   container: {
-    paddingHorizontal: 20,
-    paddingTop: 20,
+    // paddingHorizontal: 20,
+    // paddingTop: 20,
     marginTop: 60,
-    borderRadius: 10,
+    borderRadius: 5,
     backgroundColor: colors.LIGHT,
     marginHorizontal: 10,
   },
+  closeBtnArea:{
+    flexDirection: 'row',
+    justifyContent: 'flex-start',
+    paddingLeft: 10,
+    paddingBottom: 15,
+    // backgroundColor: 'black',
+    // position: 'absolute',
+    // right: 10,
+    // top: 10,
+  },
   closeBtn:{
     //backgroundColor: 'black',
-    position: 'absolute',
-    right: 2,
-    top: 10,
+    // position: 'absolute',
+    // right: 2,
+    // top: 10,
 
   },
   icon: {
     height:50,
     width: 50,
 },
-  modalTitle:{
-    fontSize:22,
-    fontWeight: 'bold',
-    color: '#8daca6',
-    marginTop: 10,
-    marginBottom: 20,
-    paddingTop: 10,
-    
-  },
-  input: {
-    borderBottomWidth: 2,
-    borderBottomColor: colors.PRIMARY,
-    fontSize: 20,
-    color: colors.DARK,
-  },
+headerArea:{
+  backgroundColor: colors.PRIMARY,
+  borderTopStartRadius: 5,
+  borderTopEndRadius: 5,
+  flexDirection: 'column',
+  paddingTop: 10,
+},
+titleArea:{
+  flexDirection: 'row',
+  justifyContent: 'center',
+  flexWrap: 'wrap',
+  marginLeft: 10,
+},
+modalTitle:{
+  fontSize:22,
+  fontWeight: 'bold',
+  color: colors.LIGHT,
+  flexWrap: 'wrap',
+  // marginTop: 10,
+  // marginBottom: 20,
+  // paddingTop: 10,
+  
+},
+inputArea: {
+  flexDirection: 'column',
+  paddingTop: 25,
+},
+inputItemRow: {
+  justifyContent: 'flex-end',
+  paddingHorizontal: 15,
+},
+inputItemColumn: {
+  backgroundColor: colors.LIGHT,
+  flexDirection: 'row',
+  justifyContent: 'space-between',
+  alignItems: 'center',
+  borderBottomWidth: 1,
+  borderBottomColor: colors.PRIMARY,
+  paddingBottom: 10,
+  paddingTop: 10,
+},
+label: {
+  fontSize: 18,
+  opacity: 0.6,
+  paddingLeft: 15,
+},
+
+input: {
+  fontSize: 18,
+  color: colors.DARK,
+  paddingRight: 15,
+},
   title: {
     height: 40,
     marginBottom: 15,

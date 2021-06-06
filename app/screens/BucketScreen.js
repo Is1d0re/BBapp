@@ -33,11 +33,11 @@ const reverseData = data => {
 };
 
 const BucketScreen = ({ user, navigation }) => {
+
   const [greet, setGreet] = useState('');
   const [modalVisible, setModalVisible] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
   const [resultNotFound, setResultNotFound] = useState(false);
-  // const [searchFilter, setSearchFilter] = useState([]);
 
   const { buckets, setBuckets, findBuckets } = useBuckets();
 
@@ -50,6 +50,7 @@ const BucketScreen = ({ user, navigation }) => {
 
   useEffect(() => {
     findGreet();
+    getTotalSaved();
   }, []);
 
   const reverseBuckets = reverseData(buckets);
@@ -60,12 +61,12 @@ const BucketScreen = ({ user, navigation }) => {
     const bucket = { id: Date.now(), title , goal, balance, targetDate, icon, transactions, time: Date.now() };
     const updatedBuckets = [...buckets, bucket];
     setBuckets(updatedBuckets);
-    console.log(updatedBuckets);
+    // console.log(updatedBuckets);
     await AsyncStorage.setItem('buckets', JSON.stringify(updatedBuckets));
   };
 
   const openBucket = bucket => {
-    navigation.navigate('BucketDetail', { bucket });
+    navigation.navigate('BucketDetail', {bucket});
   };
 
   const handleOnSearchInput = async text => {
@@ -86,13 +87,37 @@ const BucketScreen = ({ user, navigation }) => {
     } else {
       setResultNotFound(true);
     }
-    // setSearchFilter(buckets);
   };
 
   const handleOnClear = async () => {
     setSearchQuery('');
     setResultNotFound(false);
     await findBuckets();
+  };
+  const poop = async () => {
+    const poopy = await AsyncStorage.getItem('user'); 
+    console.log(Object.values(JSON.parse(poopy))[1])
+  }
+
+  const [totalSaved, setTotalSaved] = useState(new Number)
+  const getTotalSaved = async () => {
+    try {
+      const balances = [];
+      var allBalances = 0
+      for (const bucket of buckets) {
+        const balance = Number(bucket.balance);
+        balances.unshift(balance)
+        allBalances = allBalances + balance
+      }
+      setTotalSaved(allBalances)
+      let userSaved = {
+        "totalSaved" : allBalances
+      }
+      // console.log(userSaved)
+      await AsyncStorage.mergeItem('user', JSON.stringify(userSaved))
+    } catch (error) {
+      alert(error);
+    }
   };
 
   return (
@@ -104,7 +129,7 @@ const BucketScreen = ({ user, navigation }) => {
       <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
         <View style={styles.container}>
         <View style={styles.bucketsList}>
-          <Text style= {styles.pageTitle}>Your Savings Buckets</Text>
+          <Text style= {styles.pageTitle}>Savings Buckets</Text>
           {buckets.length ? (
             <SearchBar
               value={searchQuery}
@@ -113,7 +138,7 @@ const BucketScreen = ({ user, navigation }) => {
               onClear={handleOnClear}
             />
           ) : null}
-        
+        <View style={styles.bucketListArea}>
           {resultNotFound ? (
             <NotFound />
           ) : (
@@ -122,7 +147,7 @@ const BucketScreen = ({ user, navigation }) => {
               keyExtractor={item => item.id.toString()}
               renderItem={({ item }) => (
                 <Bucket onPress={() => {openBucket(item); handleOnClear()}} item={item} openEditModal={() => setModalVisible(true)}/>
-              )}
+                )}
             />
           )}
 
@@ -136,6 +161,10 @@ const BucketScreen = ({ user, navigation }) => {
               <Text style={styles.emptyHeader}>Add Buckets</Text>
             </View>
           ) : null}
+          <Text>{totalSaved.toString()} </Text>
+          <Text></Text>
+          <Button title='saved' onPress={poop} />
+          </View>
         </View>
         </View>
         
@@ -155,6 +184,7 @@ const BucketScreen = ({ user, navigation }) => {
       
     </>
   );
+
 };
 
 const styles = StyleSheet.create({
@@ -176,21 +206,20 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     paddingLeft: 15,
     paddingBottom: 18,
-    marginTop:10,
     color: colors.LIGHT,
     
   },
   pageTitle: {
-    paddingTop: 30,
+    paddingTop: 20,
     fontSize: 22,
     fontWeight: 'bold',
     paddingLeft: 15,
   },
   container: {
-    paddingHorizontal: 4,
+    padding: 10,
     flex: 1,
     zIndex: 1,
-    backgroundColor: colors.LIGHT,
+    backgroundColor: colors.BEIGE,
   },
   emptyHeader: {
     fontSize: 30,
@@ -214,9 +243,14 @@ const styles = StyleSheet.create({
   },
   bucketsList:{
     backgroundColor: colors.LIGHT,
-    padding: 1,
-    // borderRadius: 8,
-    flex: 2,
+    padding: 15,
+    marginTop: 15,
+    borderRadius: 20,
+  },
+  bucketListArea: {
+    height: 350,
+    // height: '60%',
+    flexGrow: 0,
   },
   footer:{
     marginTop: 20,

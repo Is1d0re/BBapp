@@ -189,7 +189,7 @@ const BucketInputModal = ({ visible, onClose, onSubmit, bucket, isEdit }) => {
               <Text style={styles.label}>Goal:</Text>
               <TextInput
                   value={goal}
-                  placeholder='Goal Amount'
+                  placeholder='$0.00'
                   style={[styles.input]}
                   onChangeText={text => handleOnChangeText(text, 'goal')}
                   keyboardType = 'numeric'
@@ -218,7 +218,7 @@ const BucketInputModal = ({ visible, onClose, onSubmit, bucket, isEdit }) => {
                   
                   <TextInput
                     value={balance}
-                    placeholder='Current Balance'
+                    placeholder='$0.00'
                     style={[styles.input  ]}
                     onChangeText={text => handleOnChangeText(text, 'balance')}
                     keyboardType = 'numeric'

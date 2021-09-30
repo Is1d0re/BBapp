@@ -44,8 +44,8 @@ const styles = StyleSheet.create({
   container: {
     backgroundColor: colors.LIGHT,
     //width: '90%',
-    height: 100,
-    padding: 8,
+    height: 50,
+    padding: 2,
     borderRadius: 5,
     marginBottom: 2,
     flexDirection: 'row',
@@ -59,20 +59,20 @@ const styles = StyleSheet.create({
   },
   title: {
     fontWeight: 'bold',
-    fontSize: 16,
+    fontSize: 12,
     color: colors.LIGHT,
   },
 contentMonth: {
   color: colors.DARK,
-  fontSize: 16,
+  fontSize: 12,
 },
 contentPositiveAmount: {
   color: 'green',
-  fontSize: 20,
+  fontSize: 12,
 },
 contentNegativeAmount: {
   color: colors.ERROR,
-  fontSize: 20,
+  fontSize: 12,
 
 },
 transactionLeft: {
@@ -90,7 +90,7 @@ transactionAmount: {
   flexDirection: 'row',
   justifyContent: 'center',
   borderRadius: 80,
-  padding: 10,
+  padding: 5,
 },
 transactionPositiveAmount: {
   backgroundColor: '#90f5ab',

@@ -329,10 +329,10 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   transactionsTitle: {
-    fontSize: 22,
+    fontSize: 20,
     fontWeight: 'bold',
     marginBottom: 10,
-    marginTop: 20,
+    marginTop: 15,
     paddingHorizontal: 15,
   },
   transactionsList: {
